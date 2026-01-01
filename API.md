@@ -1,12 +1,12 @@
-# PerPlayerKit API
+# API PerPlayerKit
 
-The PerPlayerKit API is a simple Java API that allows developers to interact with the plugin. The API is **NOT** stable and will possibly change in the future.
+API PerPlayerKit - это простое Java API, которое позволяет разработчикам взаимодействовать с плагином. API **НЕ**стабильно и может измениться в будущем.
 
-### Example Usage:
+### Пример использования:
 
-Add plugin jar to `./lib` folder in your project.
+Добавьте jar-файл плагина в папку `./lib` вашего проекта.
 
-Add to pom.xml:
+Добавьте в pom.xml:
 
 ```
 <dependency>
@@ -21,25 +21,25 @@ Add to pom.xml:
 ```java
 import dev.noah.perplayerkit.API;
 import dev.noah.perplayerkit.PublicKit;
-// other imports etc
+// другие импорты и т.д.
 
 public class ExamplePlugin extends JavaPlugin {
 
     public void onEnable() {
-        // On enable code...
+        // Код при включении...
     }
 
 
-// Give a player a public kit when they join the server
+// Выдать игроку публичный кит при входе на сервер
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        // Get the API instance
+        // Получить экземпляр API
         API api = API.getInstance();
 
-        // Get a list of all public kits
+        // Получить список всех публичных китов
         List<PublicKit> publicKits = api.getPublicKits();
 
-        // Load a public kit
+        // Загрузить публичный кит
         api.loadPublicKit(e.getPlayer(), publicKits.get(0));
     }
 

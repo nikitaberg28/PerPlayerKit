@@ -1,41 +1,43 @@
 # PerPlayerKit
 
-Join the discord for more information and support: [Discord](https://discord.gg/5djuBSKWuV)
+Присоединяйтесь к Discord для получения дополнительной информации и поддержки: [Discord](https://discord.gg/5djuBSKWuV)
 
-## 🚀 Quick Start
+## 🚀 Быстрый старт
 
-New to PerPlayerKit? Check out our [Simple Setup Guide](./SIMPLE_SETUP_GUIDE.md) for a step-by-step walkthrough that gets you up and running in minutes!
+Новичок в PerPlayerKit? Ознакомьтесь с нашим [Простым руководством по настройке](./SIMPLE_SETUP_GUIDE.md) с пошаговым объяснением, которое поможет вам начать работу всего за несколько минут!
 
-![Main Menu](./images/MainMenu.png)
+![Главное меню](./images/MainMenu.png)
 
-## License: AGPLv3
+## Лицензия: AGPLv3
 
-PerPlayerKit is open source and licensed under the terms of the [GNU Affero General Public License v3. 0](./LICENSE). Read and understand the license before using this software. [Frequently Asked Questions about the GNU Licenses](https://www.gnu.org/licenses/gpl-faq.html#AGPLv3InteractingRemotely).
+PerPlayerKit — это программное обеспечение с открытым исходным кодом, лицензированное в соответствии с условиями [GNU Affero General Public License v3.0](./LICENSE). Прочитайте и поймите лицензию перед использованием этого программного обеспечения. [Часто задаваемые вопросы о лицензиях GNU](https://www.gnu.org/licenses/gpl-faq.html#AGPLv3InteractingRemotely).
 
-## Contributing to PerPlayerKit
+## Вклад в развитие PerPlayerKit
 
-If you would like to contribute to the project you can do so by forking the repository and submitting a pull request. We prefer that improvements and contributions be merged into the main branch, rather than spread across numerous forks.
+Если вы хотите внести свой вклад в проект, вы можете сделать это, создав ответвление (fork) репозитория и отправив запрос на слияние (pull request). Мы предпочитаем, чтобы улучшения и вклады объединялись с основной ветвью (main branch), а не распространялись по множеству ответвлений.
 
-## About the plugin
+## О плагине
 
-PerPlayerKit is a [PaperMC](https://papermc.io/) plugin that allows players to make their own unique kits to PvP with. Administrators create a set of items in the "Virtual Kit Room", from which players pick their items. They can then make up to 9 kits each with can be shared, modified, and inspected by moderators. It features a GUI for simple kit usage of the plugin. Additionally, commands can be used to quickly load kits and for moderator features. It also features protections against abusive items, limiting NBT data and enchantments to what is available in vanilla Minecraft and only allowing items that can be found in the "virtual kit room". Players can also use the plugin to create enderchest kits that will be loaded into their enderchest when they select the enderchest kit.
+PerPlayerKit — это плагин для [PaperMC](https://papermc.io/), который позволяет игрокам создавать свои собственные уникальные киты для PvP. Администраторы создают набор предметов в "Виртуальной комнате китов", из которых игроки выбирают свои предметы. Затем они могут создать до 9 китов, которые можно делиться, изменять и просматривать модераторам. В плагине предусмотрен графический интерфейс (GUI) для простого использования. Кроме того, можно использовать команды для быстрой загрузки китов и функций модератора. Также включены защиты от злоупотребления предметами, ограничивающие NBT-данные и зачарования до того, что доступно в ванильном Minecraft, и разрешающие только те предметы, которые можно найти в "виртуальной комнате китов". Игроки также могут использовать плагин для создания китов эндер-сундуков, которые будут загружаться в их эндер-сундук, когда они выбирают кит эндер-сундука.
 
-## Dependencies
+## Зависимости
 
-PerPlayerKits uses a minecraft GUI library called canvas, it can be found [here](https://github.com/IPVP-MC/canvas). PerPlayerKits was supports version 1.19 and above.
+PerPlayerKit использует библиотеку GUI для Minecraft под названием canvas, которую можно найти [здесь](https://github.com/IPVP-MC/canvas). PerPlayerKit поддерживает версии 1.19 и выше.
 
-## Installation
+## Установка
 
-PerPlayerKits has a minimal configuration just requiring selecting the database type. PerPlayerKit supports both MySQL/MySQL compatible (MariaDB) databases and SQLite databases. If you don't know what you are doing or don't have access to a database, use `sqlite` as the database type.
+PerPlayerKit имеет минимальную конфигурацию, требуя только выбор типа базы данных. PerPlayerKit поддерживает как MySQL/совместимые с MySQL (MariaDB) базы данных, так и SQLite базы данных. Если вы не знаете, что делать, или у вас нет доступа к базе данных, используйте `sqlite` в качестве типа базы данных.
 
-To use the plugin run the server with the plugin in the "plugins" folder, then stop the server and edit the config.yml file in the "plugins/PerPlayerKits" folder.
+Чтобы использовать плагин, запустите сервер с плагином в папке "plugins", затем остановите сервер и отредактируйте файл config.yml в папке "plugins/PerPlayerKits".
 
-More configuration options are available, please refer to the [configuration documentation](./CONFIG.md).
+Доступно больше параметров конфигурации, смотрите [документацию по конфигурации](./CONFIG.md).
 
-## Commands and Permissions
+## Команды и разрешения
 
-For detailed information on commands and permissions, please refer to the [command documentation](./COMMANDS.md).
+Для получения подробной информации о командах и разрешениях, пожалуйста, обратитесь к [документации по командам](./COMMANDS.md).
 
-## External API
+## Внешнее API
 
-PerPlayerKit has a simple API that allows developers to interact with the plugin. The API is **NOT** stable and will possibly change in the future. Please refer to the [API documentation](./API.md) for more information.
+PerPlayerKit имеет простое API, которое позволяет разработчикам взаимодействовать с плагином. API **НЕ**стабильно и может измениться в будущем. Пожалуйста, обратитесь к [документации API](./API.md) для получения дополнительной информации.
+
+Переводом на русский занимался [NikitaBerg](https://github.com/nikitaberg28). Заходите также на мой [сайт](https://nikitaberg.ru), чтобы узнать обо мне больше.

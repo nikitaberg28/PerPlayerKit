@@ -1,20 +1,3 @@
-/*
- * Copyright 2022-2025 Noah Ross
- *
- * Этот файл является частью PerPlayerKit.
- *
- * PerPlayerKit - свободное программное обеспечение: вы можете распространять и/или изменять его
- * в соответствии с условиями лицензии GNU Affero General Public License, опубликованной
- * Free Software Foundation, либо версии 3 Лицензии, либо (по вашему
- * выбору) любой более поздней версии.
- *
- * PerPlayerKit распространяется в надежде, что он будет полезен, но БЕЗ КАКОЙ-ЛИБО
- * ГАРАНТИИ; даже без подразумеваемой гарантии ТОВАРНОГО ВИДА или ПРИГОДНОСТИ
- * ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ. Подробнее см. в лицензии GNU Affero General Public License.
- *
- * Вы должны были получить копию лицензии GNU Affero General Public License
- * вместе с PerPlayerKit. Если нет, см. <https://www.gnu.org/licenses/>.
- */
 package dev.noah.perplayerkit.gui;
 
 import dev.noah.perplayerkit.ItemFilter;
@@ -85,15 +68,15 @@ public class GUI {
         for (int i = 41; i < 54; i++) {
             menu.getSlot(i).setItem(ItemUtil.createGlassPane());
         }
-        menu.getSlot(45).setItem(createItem(Material.CHAINMAIL_BOOTS, 1, "<gray><b>БОТИНКИ</b></gray>"));
-        menu.getSlot(46).setItem(createItem(Material.CHAINMAIL_LEGGINGS, 1, "<gray><b>ПОНОЖИ</b></gray>"));
-        menu.getSlot(47).setItem(createItem(Material.CHAINMAIL_CHESTPLATE, 1, "<gray><b>НАГРУДНИК</b></gray>"));
-        menu.getSlot(48).setItem(createItem(Material.CHAINMAIL_HELMET, 1, "<gray><b>ШЛЕМ</b></gray>"));
-        menu.getSlot(49).setItem(createItem(Material.SHIELD, 1, "<gray><b>ЛЕВАЯ РУКА</b></gray>"));
+        menu.getSlot(45).setItem(createItem(Material.CHAINMAIL_BOOTS, 1, "<gray>БОТИНКИ</gray>"));
+        menu.getSlot(46).setItem(createItem(Material.CHAINMAIL_LEGGINGS, 1, "<gray>ПОНОЖИ</gray>"));
+        menu.getSlot(47).setItem(createItem(Material.CHAINMAIL_CHESTPLATE, 1, "<gray>НАГРУДНИК</gray>"));
+        menu.getSlot(48).setItem(createItem(Material.CHAINMAIL_HELMET, 1, "<gray>ШЛЕМ</gray>"));
+        menu.getSlot(49).setItem(createItem(Material.SHIELD, 1, "<gray>ЛЕВАЯ РУКА</gray>"));
 
-        menu.getSlot(51).setItem(createItem(Material.CHEST, 1, "<green><b>ИМПОРТ</b></green>", "<gray>● Импорт из инвентаря</gray>"));
-        menu.getSlot(52).setItem(createItem(Material.BARRIER, 1, "<red><b>ОЧИСТИТЬ КИТ</b></red>", "<gray>● Клик для очистки</gray>")); // Очистить кит
-        menu.getSlot(53).setItem(createItem(Material.OAK_DOOR, 1, "<red><b>НАЗАД</b></red>"));
+        menu.getSlot(51).setItem(createItem(Material.CHEST, 1, "<green>ИМПОРТ</green>", "<gray>● ЛКМ для импорта из инвентаря</gray>"));
+        menu.getSlot(52).setItem(createItem(Material.BARRIER, 1, "<red>ОЧИСТИТЬ КИТ</red>", "<gray>● ЛКМ для очистки</gray>")); // Очистить кит
+        menu.getSlot(53).setItem(createItem(Material.OAK_DOOR, 1, "<red>НАЗАД</red>"));
         addMainButton(menu.getSlot(53));
         addClear(menu.getSlot(52)); // Очистить кит
         addImport(menu.getSlot(51));
@@ -117,15 +100,15 @@ public class GUI {
         for (int i = 41; i < 54; i++) {
             menu.getSlot(i).setItem(ItemUtil.createGlassPane());
         }
-        menu.getSlot(45).setItem(createItem(Material.CHAINMAIL_BOOTS, 1, "<gray><b>БОТИНКИ</b></gray>"));
-        menu.getSlot(46).setItem(createItem(Material.CHAINMAIL_LEGGINGS, 1, "<gray><b>ПОНОЖИ</b></gray>"));
-        menu.getSlot(47).setItem(createItem(Material.CHAINMAIL_CHESTPLATE, 1, "<gray><b>НАГРУДНИК</b></gray>"));
-        menu.getSlot(48).setItem(createItem(Material.CHAINMAIL_HELMET, 1, "<gray><b>ШЛЕМ</b></gray>"));
-        menu.getSlot(49).setItem(createItem(Material.SHIELD, 1, "<gray><b>ЛЕВАЯ РУКА</b></gray>"));
+        menu.getSlot(45).setItem(createItem(Material.CHAINMAIL_BOOTS, 1, "<gray>БОТИНКИ</gray>"));
+        menu.getSlot(46).setItem(createItem(Material.CHAINMAIL_LEGGINGS, 1, "<gray>ПОНОЖИ</gray>"));
+        menu.getSlot(47).setItem(createItem(Material.CHAINMAIL_CHESTPLATE, 1, "<gray>НАГРУДНИК</gray>"));
+        menu.getSlot(48).setItem(createItem(Material.CHAINMAIL_HELMET, 1, "<gray>ШЛЕМ</gray>"));
+        menu.getSlot(49).setItem(createItem(Material.SHIELD, 1, "<gray>ЛЕВАЯ РУКА</gray>"));
 
-        menu.getSlot(51).setItem(createItem(Material.CHEST, 1, "<green><b>ИМПОРТ</b></green>", "<gray>● Импорт из инвентаря</gray>"));
-        menu.getSlot(52).setItem(createItem(Material.BARRIER, 1, "<red><b>ОЧИСТИТЬ КИТ</b></red>", "<gray>● Клик для очистки</gray>")); // Очистить кит
-        menu.getSlot(53).setItem(createItem(Material.OAK_DOOR, 1, "<red><b>НАЗАД</b></red>"));
+        menu.getSlot(51).setItem(createItem(Material.CHEST, 1, "<green>ИМПОРТ</green>", "<gray>● ЛКМ для импорта из инвентаря</gray>"));
+        menu.getSlot(52).setItem(createItem(Material.BARRIER, 1, "<red>ОЧИСТИТЬ КИТ</red>", "<gray>● ЛКМ для очистки</gray>")); // Очистить кит
+        menu.getSlot(53).setItem(createItem(Material.OAK_DOOR, 1, "<red>НАЗАД</red>"));
         addMainButton(menu.getSlot(53));
         addClear(menu.getSlot(52)); // Очистить кит
         addImport(menu.getSlot(51));
@@ -155,9 +138,9 @@ public class GUI {
         for (int i = 9; i < 36; i++) {
             allowModification(menu.getSlot(i));
         }
-        menu.getSlot(51).setItem(createItem(Material.ENDER_CHEST, 1, "<green><b>ИМПОРТ</b></green>", "<gray>● Импорт из эндер-сундука</gray>")); // Импорт из эндер-сундука
-        menu.getSlot(52).setItem(createItem(Material.BARRIER, 1, "<red><b>ОЧИСТИТЬ КИТ</b></red>", "<gray>● Клик для очистки</gray>")); // Очистить кит
-        menu.getSlot(53).setItem(createItem(Material.OAK_DOOR, 1, "<red><b>НАЗАД</b></red>"));
+        menu.getSlot(51).setItem(createItem(Material.ENDER_CHEST, 1, "<green>ИМПОРТ</green>", "<gray>● ЛКМ для импорта из эндер-сундука</gray>")); // Импорт из эндер-сундука
+        menu.getSlot(52).setItem(createItem(Material.BARRIER, 1, "<red>ОЧИСТИТЬ КИТ</red>", "<gray>● ЛКМ для очистки</gray>")); // Очистить кит
+        menu.getSlot(53).setItem(createItem(Material.OAK_DOOR, 1, "<red>НАЗАД</red>"));
         addMainButton(menu.getSlot(53));
         addClear(menu.getSlot(52), 9, 36); // Очистить кит
         addImportEC(menu.getSlot(51)); // Импорт из эндер-сундука
@@ -178,13 +161,13 @@ public class GUI {
         for (int i = 41; i < 54; i++) {
             menu.getSlot(i).setItem(ItemUtil.createGlassPane());
         }
-        menu.getSlot(45).setItem(createItem(Material.CHAINMAIL_BOOTS, 1, "<gray><b>БОТИНКИ</b></gray>"));
-        menu.getSlot(46).setItem(createItem(Material.CHAINMAIL_LEGGINGS, 1, "<gray><b>ПОНОЖИ</b></gray>"));
-        menu.getSlot(47).setItem(createItem(Material.CHAINMAIL_CHESTPLATE, 1, "<gray><b>НАГРУДНИК</b></gray>"));
-        menu.getSlot(48).setItem(createItem(Material.CHAINMAIL_HELMET, 1, "<gray><b>ШЛЕМ</b></gray>"));
-        menu.getSlot(49).setItem(createItem(Material.SHIELD, 1, "<gray><b>ЛЕВАЯ РУКА</b></gray>"));
+        menu.getSlot(45).setItem(createItem(Material.CHAINMAIL_BOOTS, 1, "<gray>БОТИНКИ</gray>"));
+        menu.getSlot(46).setItem(createItem(Material.CHAINMAIL_LEGGINGS, 1, "<gray>ПОНОЖИ</gray>"));
+        menu.getSlot(47).setItem(createItem(Material.CHAINMAIL_CHESTPLATE, 1, "<gray>НАГРУДНИК</gray>"));
+        menu.getSlot(48).setItem(createItem(Material.CHAINMAIL_HELMET, 1, "<gray>ШЛЕМ</gray>"));
+        menu.getSlot(49).setItem(createItem(Material.SHIELD, 1, "<gray>ЛЕВАЯ РУКА</gray>"));
 
-        menu.getSlot(53).setItem(createItem(Material.OAK_DOOR, 1, "<red><b>ЗАКРЫТЬ</b></red>"));
+        menu.getSlot(53).setItem(createItem(Material.OAK_DOOR, 1, "<red>ЗАКРЫТЬ</red>"));
         menu.getSlot(53).setClickHandler((player, info) -> {
             SoundManager.playClick(player);
             info.getClickedMenu().close();
@@ -195,7 +178,7 @@ public class GUI {
             for (int i = 0; i < 41; i++) {
                 allowModification(menu.getSlot(i));
             }
-            menu.getSlot(52).setItem(createItem(Material.BARRIER, 1, "<red><b>ОЧИСТИТЬ КИТ</b></red>", "<gray>● Клик для очистки кита</gray>")); // Очистить кит
+            menu.getSlot(52).setItem(createItem(Material.BARRIER, 1, "<red>ОЧИСТИТЬ КИТ</red>", "<gray>● ПКМ/Shift-ЛКМ для удаления кита</gray>")); // Очистить кит
             addClearKit(menu.getSlot(52), target, slot); // Удалить кит
         }
 
@@ -224,7 +207,7 @@ public class GUI {
             }
         }
 
-        menu.getSlot(53).setItem(createItem(Material.OAK_DOOR, 1, "<red><b>ЗАКРЫТЬ</b></red>"));
+        menu.getSlot(53).setItem(createItem(Material.OAK_DOOR, 1, "<red>ЗАКРЫТЬ</red>"));
         menu.getSlot(53).setClickHandler((player, info) -> {
             SoundManager.playClick(player);
             info.getClickedMenu().close();
@@ -235,7 +218,7 @@ public class GUI {
             for (int i = 9; i < 36; i++) {
                 allowModification(menu.getSlot(i));
             }
-            menu.getSlot(52).setItem(createItem(Material.BARRIER, 1, "<red><b>ОЧИСТИТЬ ЭНДЕР-СУНДУК</b></red>", "<gray>● Клик для удаления эндер-сундука</gray>")); // Очистить эндер-сундук
+            menu.getSlot(52).setItem(createItem(Material.BARRIER, 1, "<red>ОЧИСТИТЬ ЭНДЕР-СУНДУК</red>", "<gray>● ПКМ/Shift-ЛКМ для удаления эндер-сундука</gray>")); // Очистить эндер-сундук
             addClearEnderchest(menu.getSlot(52), target, slot); // Удалить эндер-сундук
         }
 
@@ -250,23 +233,23 @@ public class GUI {
             menu.getSlot(i).setItem(createGlassPane());
         }
         for (int i = 9; i < 18; i++) {
-            menu.getSlot(i).setItem(createItem(Material.CHEST, 1, "<dark_aqua><b>Кит " + (i - 8) + "</b></dark_aqua>", "<gray>● Левый клик для загрузки кита</gray>")); // Кит
+            menu.getSlot(i).setItem(createItem(Material.CHEST, 1, "<dark_aqua>Кит " + (i - 8) + "</dark_aqua>", "<gray>● ЛКМ для загрузки кита</gray>")); // Кит
             addEditLoad(menu.getSlot(i), i - 8); // Редактировать/Загрузить
         }
         for (int i = 18; i < 27; i++) {
             if (KitManager.get().getItemStackArrayById(p.getUniqueId() + "ec" + (i - 17)) != null) { // Получить кит эндер-сундука
-                menu.getSlot(i).setItem(createItem(Material.ENDER_CHEST, 1, "<dark_aqua><b>Эндер-сундук " + (i - 17) + "</b></dark_aqua>", "<gray>● Левый клик для загрузки кита</gray>")); // Эндер-сундук
-                addEditLoadEC(menu.getSlot(i), i - 17); // Редактировать/Загрузить эндер-сундук
+                menu.getSlot(i).setItem(createItem(Material.ENDER_CHEST, 1, "<dark_aqua>Эндер-сундук " + (i - 17) + "</dark_aqua>", "<gray>● ЛКМ для загрузки кита</gray>")); // Эндер-сундук
+                addEditLoadEC(menu.getSlot(i), i - 17); // Редактировать/Загрузить эндер-сундука
             } else {
-                menu.getSlot(i).setItem(createItem(Material.ENDER_EYE, 1, "<dark_aqua><b>Эндер-сундук " + (i - 17) + "</b></dark_aqua>", "<gray>● Клик для создания</gray>")); // Создать эндер-сундук
-                addEditEC(menu.getSlot(i), i - 17); // Редактировать эндер-сундук
+                menu.getSlot(i).setItem(createItem(Material.ENDER_EYE, 1, "<dark_aqua>Эндер-сундук " + (i - 17) + "</dark_aqua>", "<gray>● ЛКМ для создания</gray>")); // Создать эндер-сундук
+                addEditEC(menu.getSlot(i), i - 17); // Редактировать эндер-сундука
             }
         }
         for (int i = 27; i < 36; i++) {
             if (KitManager.get().getItemStackArrayById(p.getUniqueId().toString() + (i - 26)) != null) { // Получить кит
-                menu.getSlot(i).setItem(createItem(Material.KNOWLEDGE_BOOK, 1, "<green><b>КИТ СУЩЕСТВУЕТ</b></green>", "<gray>● Клик для редактирования</gray>")); // Кит существует
+                menu.getSlot(i).setItem(createItem(Material.KNOWLEDGE_BOOK, 1, "<green>КИТ СУЩЕСТВУЕТ</green>", "<gray>● ЛКМ для редактирования</gray>")); // Кит существует
             } else {
-                menu.getSlot(i).setItem(createItem(Material.BOOK, 1, "<red><b>КИТ НЕ НАЙДЕН</b></red>", "<gray>● Клик для создания</gray>")); // Кит не найден
+                menu.getSlot(i).setItem(createItem(Material.BOOK, 1, "<red>КИТ НЕ НАЙДЕН</red>", "<gray>● ЛКМ для создания</gray>")); // Кит не найден
             }
             addEdit(menu.getSlot(i), i - 26); // Редактировать кит
         }
@@ -275,12 +258,12 @@ public class GUI {
             menu.getSlot(i).setItem(createGlassPane());
         }
 
-        menu.getSlot(37).setItem(createItem(Material.NETHER_STAR, 1, "<green><b>КОМНАТА КИТОВ</b></green>")); // Комната китов
-        menu.getSlot(38).setItem(createItem(Material.BOOKSHELF, 1, "<yellow><b>ГОТОВЫЕ КИТЫ</b></yellow>")); // Готовые киты
-        menu.getSlot(39).setItem(createItem(Material.OAK_SIGN, 1, "<green><b>ИНФА</b></green>", "<gray>● Кликните по слоту кита, чтобы загрузить его</gray>", "<gray>● Клик по книге даст возможность редактирования</gray>", "<gray>● Делитесь китами с помощью /sharekit <slot></gray>")); // Инфо
-        menu.getSlot(41).setItem(createItem(Material.REDSTONE_BLOCK, 1, "<red><b>ОЧИСТИТЬ ИНВЕНТАРЬ</b></red>", "<gray>● Кликни</gray>"));
-        menu.getSlot(42).setItem(createItem(Material.COMPASS, 1, "<green><b>ПОДЕЛИТЬСЯ КИТАМИ</b></green>", "<gray>● /sharekit <slot></gray>")); // Делиться китами
-        menu.getSlot(43).setItem(createItem(Material.EXPERIENCE_BOTTLE, 1, "<green><b>ПОЧИНИТЬ ПРЕДМЕТЫ</b></green>")); // Починить предметы
+        menu.getSlot(37).setItem(createItem(Material.NETHER_STAR, 1, "<green>КОМНАТА КИТОВ</green>")); // Комната китов
+        menu.getSlot(38).setItem(createItem(Material.BOOKSHELF, 1, "<yellow>ГОТОВЫЕ КИТЫ</yellow>")); // Готовые киты
+        menu.getSlot(39).setItem(createItem(Material.OAK_SIGN, 1, "<green>ИНФА</green>", "<gray>● ЛКМ по слоту кита для загрузки</gray>", "<gray>● ЛКМ по книге для редактирования</gray>", "<gray>● /sharekit <slot></gray>")); // Инфо
+        menu.getSlot(41).setItem(createItem(Material.REDSTONE_BLOCK, 1, "<red>ОЧИСТИТЬ ИНВЕНТАРЬ</red>", "<gray>● ЛКМ для очистки</gray>"));
+        menu.getSlot(42).setItem(createItem(Material.COMPASS, 1, "<green>ПОДЕЛИТЬСЯ КИТАМИ</green>", "<gray>● /sharekit <slot></gray>")); // Делиться китами
+        menu.getSlot(43).setItem(createItem(Material.EXPERIENCE_BOTTLE, 1, "<green>ПОЧИНИТЬ ПРЕДМЕТЫ</green>")); // Починить предметы
         addRepairButton(menu.getSlot(43)); // Кнопка починки
         addKitRoom(menu.getSlot(37)); // Комната китов
         addPublicKitMenu(menu.getSlot(38)); // Меню публичных китов
@@ -308,14 +291,16 @@ public class GUI {
             }
         }
 
-        menu.getSlot(45).setItem(createItem(Material.BEACON, 1, "<dark_aqua><b>ПОПОЛНИТЬ</b></dark_aqua>")); // Пополнить
+        menu.getSlot(45).setItem(createItem(Material.BEACON, 1, "<dark_aqua>ПОПОЛНИТЬ</dark_aqua>")); // Пополнить
         addKitRoom(menu.getSlot(45), page); // Комната китов (страница)
 
         if (!p.hasPermission("perplayerkit.editkitroom")) {
-            menu.getSlot(53).setItem(createItem(Material.OAK_DOOR, 1, "<red><b>НАЗАД</b></red>"));
+            menu.getSlot(53).setItem(createItem(Material.OAK_DOOR, 1, "<red>НАЗАД</red>"));
             addMainButton(menu.getSlot(53));
         } else {
-            menu.getSlot(53).setItem(createItem(Material.BARRIER, page + 1, "<red><b>МЕНЮ РЕДАКТИРОВАНИЯ</b></red>", "<red>SHIFT-ПРАВЫЙ КЛИК ДЛЯ СОХРАНЕНИЯ</red>")); // Меню редактирования
+            menu.getSlot(53).setItem(createItem(Material.BARRIER, page + 1, "<red>МЕНЮ РЕДАКТИРОВАНИЯ</red>", "<red>ПКМ/Shift-ЛКМ ДЛЯ СОХРАНЕНИЯ</red>")); // Меню редактирования
+            // Привязываем обработчик сохранения страницы (ПКМ или Shift+ЛКМ)
+            addKitRoomSaveButton(menu.getSlot(53), page);
         }
         addKitRoom(menu.getSlot(47), 0); // Комната китов (страница)
         addKitRoom(menu.getSlot(48), 1); // Комната китов (страница)
@@ -359,14 +344,14 @@ public class GUI {
             menu.getSlot(i + 9).setItem(kit[i]);
         }
 
-        menu.getSlot(45).setItem(createItem(Material.CHAINMAIL_BOOTS, 1, "<gray><b>БОТИНКИ</b></gray>"));
-        menu.getSlot(46).setItem(createItem(Material.CHAINMAIL_LEGGINGS, 1, "<gray><b>ПОНОЖИ</b></gray>"));
-        menu.getSlot(47).setItem(createItem(Material.CHAINMAIL_CHESTPLATE, 1, "<gray><b>НАГРУДНИК</b></gray>"));
-        menu.getSlot(48).setItem(createItem(Material.CHAINMAIL_HELMET, 1, "<gray><b>ШЛЕМ</b></gray>"));
-        menu.getSlot(49).setItem(createItem(Material.SHIELD, 1, "<gray><b>ЛЕВАЯ РУКА</b></gray>"));
+        menu.getSlot(45).setItem(createItem(Material.CHAINMAIL_BOOTS, 1, "<gray>БОТИНКИ</gray>"));
+        menu.getSlot(46).setItem(createItem(Material.CHAINMAIL_LEGGINGS, 1, "<gray>ПОНОЖИ</gray>"));
+        menu.getSlot(47).setItem(createItem(Material.CHAINMAIL_CHESTPLATE, 1, "<gray>НАГРУДНИК</gray>"));
+        menu.getSlot(48).setItem(createItem(Material.CHAINMAIL_HELMET, 1, "<gray>ШЛЕМ</gray>"));
+        menu.getSlot(49).setItem(createItem(Material.SHIELD, 1, "<gray>ЛЕВАЯ РУКА</gray>"));
 
-        menu.getSlot(52).setItem(createItem(Material.APPLE, 1, "<green><b>ЗАГРУЗИТЬ КИТ</b></green>")); // Загрузить кит
-        menu.getSlot(53).setItem(createItem(Material.OAK_DOOR, 1, "<red><b>НАЗАД</b></red>"));
+        menu.getSlot(52).setItem(createItem(Material.APPLE, 1, "<green>ЗАГРУЗИТЬ КИТ</green>")); // Загрузить кит
+        menu.getSlot(53).setItem(createItem(Material.OAK_DOOR, 1, "<red>НАЗАД</red>"));
         addPublicKitMenu(menu.getSlot(53)); // Меню публичных китов
         addLoadPublicKit(menu.getSlot(52), id); // Загрузить публичный кит
 
@@ -382,7 +367,7 @@ public class GUI {
         }
 
         for (int i = 18; i < 36; i++) {
-            menu.getSlot(i).setItem(ItemUtil.createItem(Material.BOOK, 1, "<gray><b>звезда добавит киты потом.</b></gray>")); // Больше китов скоро
+            menu.getSlot(i).setItem(ItemUtil.createItem(Material.BOOK, 1, "<gray>звезда добавит киты потом.</gray>")); // Больше китов скоро
         }
 
         List<PublicKit> publicKitList = KitManager.get().getPublicKitList(); // Получить список публичных китов
@@ -397,9 +382,9 @@ public class GUI {
                 addPublicKitButton(menu.getSlot(i + 18), publicKitList.get(i).id); // Кнопка публичного кита
             } else {
                 if (player.hasPermission("perplayerkit.admin")) {
-                    menu.getSlot(i + 18).setItem(createItem(publicKitList.get(i).icon, 1, ChatColor.RESET + publicKitList.get(i).name + " <red><b>[НЕ НАЗНАЧЕН]</b></red>", "<gray>● Администраторы еще не настроили этот кит</gray>", "<gray>● [АДМИН] Shift-клик для редактирования</gray>")); // Не назначен
+                    menu.getSlot(i + 18).setItem(createItem(publicKitList.get(i).icon, 1, ChatColor.RESET + publicKitList.get(i).name + " <red>[НЕ НАЗНАЧЕН]</red>", "<gray>● Администраторы еще не настроили этот кит</gray>", "<gray>● [АДМИН] Shift-клик для редактирования</gray>")); // Не назначен
                 } else {
-                    menu.getSlot(i + 18).setItem(createItem(publicKitList.get(i).icon, 1, ChatColor.RESET + publicKitList.get(i).name + " <red><b>[НЕ НАЗНАЧЕН]</b></red>", "<gray>● Администраторы еще не настроили этот кит</gray>")); // Не назначен
+                    menu.getSlot(i + 18).setItem(createItem(publicKitList.get(i).icon, 1, ChatColor.RESET + publicKitList.get(i).name + " <red>[НЕ НАЗНАЧЕН]</red>", "<gray>● Администраторы еще не настроили этот кит</gray>")); // Не назначен
                 }
             }
 
@@ -410,18 +395,16 @@ public class GUI {
 
         addMainButton(menu.getSlot(53)); // Кнопка главного меню
 
-        menu.getSlot(53).setItem(createItem(Material.OAK_DOOR, 1, "<red><b>НАЗАД</b></red>"));
+        menu.getSlot(53).setItem(createItem(Material.OAK_DOOR, 1, "<red>НАЗАД</red>"));
         menu.open(player);
     }
 
     public void addClear(Slot slot) { // Добавить очистку (для обычного кита)
         slot.setClickHandler((player, info) -> {
             SoundManager.playClick(player);
-            if (info.getClickType().isShiftClick()) {
-                Menu m = info.getClickedMenu();
-                for (int i = 0; i < 41; i++) {
-                    m.getSlot(i).setItem((org.bukkit.inventory.ItemStack) null);
-                }
+            Menu m = info.getClickedMenu();
+            for (int i = 0; i < 41; i++) {
+                m.getSlot(i).setItem((org.bukkit.inventory.ItemStack) null);
             }
         });
     }
@@ -429,11 +412,9 @@ public class GUI {
     public void addClear(Slot slot, int start, int end) { // Добавить очистку (диапазон)
         slot.setClickHandler((player, info) -> {
             SoundManager.playClick(player);
-            if (info.getClickType().isShiftClick()) {
-                Menu m = info.getClickedMenu();
-                for (int i = start; i < end; i++) {
-                    m.getSlot(i).setItem((org.bukkit.inventory.ItemStack) null);
-                }
+            Menu m = info.getClickedMenu();
+            for (int i = start; i < end; i++) {
+                m.getSlot(i).setItem((org.bukkit.inventory.ItemStack) null);
             }
         });
     }
@@ -441,7 +422,7 @@ public class GUI {
     public void addClearKit(Slot slot, UUID target, int slotNum) { // Добавить удаление кита
         slot.setClickHandler((player, info) -> {
             SoundManager.playClick(player);
-            if (info.getClickType().isShiftClick()) {
+            if (info.getClickType() == ClickType.RIGHT || info.getClickType().isShiftClick()) {
                 KitManager.get().deleteKit(target, slotNum); // Удалить кит
                 player.sendMessage(ChatColor.GREEN + "Кит " + slotNum + " удален для игрока!"); // Кит удален
                 SoundManager.playSuccess(player);
@@ -455,7 +436,7 @@ public class GUI {
     public void addClearEnderchest(Slot slot, UUID target, int slotNum) { // Добавить удаление эндер-сундука
         slot.setClickHandler((player, info) -> {
             SoundManager.playClick(player);
-            if (info.getClickType().isShiftClick()) {
+            if (info.getClickType() == ClickType.RIGHT || info.getClickType().isShiftClick()) {
                 KitManager.get().deleteEnderchest(target, slotNum); // Удалить эндер-сундук
                 player.sendMessage(ChatColor.GREEN + "Эндер-сундук " + slotNum + " удален для игрока!"); // Эндер-сундук удален
                 SoundManager.playSuccess(player);
@@ -528,16 +509,20 @@ public class GUI {
         });
     }
 
-    public void addKitRoomSaveButton(Slot slot, int page) { // Добавить кнопку сохранения комнаты китов
+    // Исправленная версия: теперь принимает страницу, читает содержимое меню и реагирует на ПКМ или Shift+ЛКМ
+    public void addKitRoomSaveButton(Slot slot, int page) {
         slot.setClickHandler((player, info) -> {
             SoundManager.playClick(player);
-            if (info.getClickType().isRightClick() && info.getClickType().isShiftClick()) {
+            ClickType ct = info.getClickType();
+            // Условие: ПКМ (RIGHT) ИЛИ Shift+ЛКМ (SHIFT_LEFT)
+            if (ct == ClickType.RIGHT || ct == ClickType.SHIFT_LEFT) {
+                Menu m = info.getClickedMenu();
                 ItemStack[] data = new ItemStack[45];
-                for (int i = 0; i < 41; i++) {
-                    data[i] = player.getInventory().getContents()[i];
+                for (int i = 0; i < 45; i++) {
+                    data[i] = m.getSlot(i).getItem();
                 }
-                KitRoomDataManager.get().setKitRoom(page, data); // Установить комнату китов
-                player.sendMessage("меню сохранено"); // Меню сохранено
+                KitRoomDataManager.get().setKitRoom(page, data);
+                player.sendMessage(ChatColor.GREEN + "Меню сохранено в базу данных");
                 SoundManager.playSuccess(player);
             }
         });
@@ -556,11 +541,9 @@ public class GUI {
     public void addClearButton(Slot slot) { // Добавить кнопку очистки инвентаря
         slot.setClickHandler((player, info) -> {
             SoundManager.playClick(player);
-            if (info.getClickType().isShiftClick()) {
-                player.getInventory().clear(); // Очистить инвентарь
-                player.sendMessage(ChatColor.GREEN + "Инвентарь очищен"); // Инвентарь очищен
-                SoundManager.playSuccess(player);
-            }
+            player.getInventory().clear(); // Очистить инвентарь
+            player.sendMessage(ChatColor.GREEN + "Инвентарь очищен"); // Инвентарь очищен
+            SoundManager.playSuccess(player);
         });
     }
 
@@ -599,39 +582,33 @@ public class GUI {
     public void addEdit(Slot slot, int i) { // Добавить редактирование (кита)
         slot.setClickHandler((player, info) -> {
             SoundManager.playClick(player);
-            if (info.getClickType().isLeftClick() || info.getClickType().isRightClick()) {
-                OpenKitMenu(player, i); // Открыть меню кита
-            }
+            OpenKitMenu(player, i); // Открыть меню кита
         });
     }
 
     public void addEditEC(Slot slot, int i) { // Добавить редактирование (эндер-сундука)
         slot.setClickHandler((player, info) -> {
             SoundManager.playClick(player);
-            if (info.getClickType().isLeftClick() || info.getClickType().isRightClick()) {
-                OpenECKitKenu(player, i); // Открыть меню эндер-сундука
-            }
+            OpenECKitKenu(player, i); // Открыть меню эндер-сундука
         });
     }
 
     public void addLoad(Slot slot, int i) { // Добавить загрузку (кита)
         slot.setClickHandler((player, info) -> {
             SoundManager.playClick(player);
-            if (info.getClickType() == ClickType.LEFT || info.getClickType() == ClickType.SHIFT_LEFT) {
-                KitManager.get().loadKit(player, i); // Загрузить кит
-                info.getClickedMenu().close();
-                SoundManager.playCloseGui(player);
-            }
+            KitManager.get().loadKit(player, i); // Загрузить кит
+            info.getClickedMenu().close();
+            SoundManager.playCloseGui(player);
         });
     }
 
     public void addEditLoad(Slot slot, int i) { // Добавить редактирование/загрузку (кита)
         slot.setClickHandler((player, info) -> {
             SoundManager.playClick(player);
-            if (info.getClickType() == ClickType.LEFT || info.getClickType() == ClickType.SHIFT_LEFT) {
+            if (info.getClickType() == ClickType.LEFT) {
                 KitManager.get().loadKit(player, i); // Загрузить кит
                 info.getClickedMenu().close();
-            } else if (info.getClickType() == ClickType.RIGHT || info.getClickType() == ClickType.SHIFT_RIGHT) {
+            } else {
                 OpenKitMenu(player, i); // Открыть меню кита
             }
         });
@@ -640,10 +617,10 @@ public class GUI {
     public void addEditLoadEC(Slot slot, int i) { // Добавить редактирование/загрузку (эндер-сундука)
         slot.setClickHandler((player, info) -> {
             SoundManager.playClick(player);
-            if (info.getClickType() == ClickType.LEFT || info.getClickType() == ClickType.SHIFT_LEFT) {
-                KitManager.get().loadEnderchest(player, i); // Загрузить эндер-сундук
+            if (info.getClickType() == ClickType.LEFT) {
+                KitManager.get().loadEnderchest(player, i); // Загрузить эндер-сундука
                 info.getClickedMenu().close();
-            } else if (info.getClickType() == ClickType.RIGHT || info.getClickType() == ClickType.SHIFT_RIGHT) {
+            } else {
                 OpenECKitKenu(player, i); // Открыть меню эндер-сундука
             }
         });

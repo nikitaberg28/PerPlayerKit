@@ -1,66 +1,66 @@
-# Configuration Overview:
+# Обзор конфигурации:
 
-## MiniMessage Format
+## Формат MiniMessage
 
-All color and text formatting in this configuration uses **MiniMessage format**. This is a modern, flexible text formatting system that replaces legacy color codes.
+Все цвета и форматирование текста в этой конфигурации используют **формат MiniMessage**. Это современная, гибкая система форматирования текста, которая заменяет устаревшие коды цветов.
 
-### Common Colors
+### Общие цвета
 
-Named colors are the simplest way to add color:
-- `<red>` - Red text
-- `<green>` - Green text
-- `<blue>` - Blue text
-- `<yellow>` - Yellow text
-- `<aqua>` - Aqua/Cyan text
-- `<gray>` - Gray text
-- `<white>` - White text
-- `<black>` - Black text
-- `<dark_red>` - Dark red
-- `<dark_green>` - Dark green
-- `<dark_blue>` - Dark blue
-- `<dark_gray>` - Dark gray
-- `<dark_aqua>` - Dark aqua
-- `<gold>` - Gold/Orange
+Именованные цвета — самый простой способ добавить цвет:
+- `<red>` - Красный текст
+- `<green>` - Зелёный текст
+- `<blue>` - Синий текст
+- `<yellow>` - Жёлтый текст
+- `<aqua>` - Бирюзовый/Голубой текст
+- `<gray>` - Серый текст
+- `<white>` - Белый текст
+- `<black>` - Чёрный текст
+- `<dark_red>` - Тёмно-красный
+- `<dark_green>` - Тёмно-зелёный
+- `<dark_blue>` - Тёмно-синий
+- `<dark_gray>` - Тёмно-серый
+- `<dark_aqua>` - Тёмно-бирюзовый
+- `<gold>` - Золотой/Оранжевый
 
-### RGB Colors
+### RGB Цвета
 
-For precise color control, use RGB hex colors:
-- `<color:#FF0000>` - Red (RGB format: #RRGGBB)
-- `<color:#00FF00>` - Green
-- `<color:#0000FF>` - Blue
-- `<color:#FF6B35>` - Custom orange
-- `<color:#A0E7E5>` - Custom teal
+Для точного контроля цвета используйте RGB-цвета в формате hex:
+- `<color:#FF0000>` - Красный (RGB формат: #RRGGBB)
+- `<color:#00FF00>` - Зелёный
+- `<color:#0000FF>` - Синий
+- `<color:#FF6B35>` - Пользовательский оранжевый
+- `<color:#A0E7E5>` - Пользовательский бирюзовый
 
-### Text Formatting
+### Форматирование текста
 
-Combine colors with formatting:
-- `<b>` - Bold text
-- `<i>` - Italic text
-- `<u>` - Underlined text
-- `<st>` - Strikethrough text
-- `<obf>` - Obfuscated text
-- `<reset>` - Reset formatting
+Сочетайте цвета с форматированием:
+- `<b>` - Жирный текст
+- `<i>` - Курсивный текст
+- `<u>` - Подчёркнутый текст
+- `<st>` - Перечёркнутый текст
+- `<obf>` - Обфусцированный (искажённый) текст
+- `<reset>` - Сброс форматирования
 
-### Examples
+### Примеры
 
 ```
-<red>Error:</red> <gray>Something went wrong</gray>
-<green><b>Success!</b></green> Your kit has been saved.
-<color:#FF6B35><b>Important:</b></color> This is a custom orange color.
-<aqua>Type <u>/kit</u> to get started!</aqua>
+<red>Ошибка:</red> <gray>Что-то пошло не так</gray>
+<green><b>Успех!</b></green> Ваш кит сохранён.
+<color:#FF6B35><b>Важно:</b></color> Это пользовательский оранжевый цвет.
+<aqua>Введите <u>/kit</u> чтобы начать!</aqua>
 ```
 
-For a complete reference of all available options, see the [MiniMessage documentation](https://docs.papermc.io/adventure/minimessage/).
+Полный справочник всех доступных опций см. в [документации MiniMessage](https://docs.papermc.io/adventure/minimessage/).
 
 ---
 
-### **Database Credentials**
+### **Учетные данные базы данных**
 
-Select either storage type. SQLite is recommended for small servers, while MySQL is recommended for larger servers or multi-server setups.
+Выберите тип хранилища. SQLite рекомендуется для небольших серверов, а MySQL — для более крупных серверов или мульти-серверных установок.
 
 ```yaml
-# It is strongly recommended to use MySQL or SQLite
-# YAML should not be used in any environment
+# Настоятельно рекомендуется использовать MySQL или SQLite
+# YAML не должен использоваться ни в каком окружении
 
 
 storage: #sqlite, mysql, redis, yml (yaml)
@@ -81,19 +81,19 @@ redis:
 
 ---
 
-### **Message of the Day (MOTD)**
+### **Сообщение дня (MOTD)**
 
-The MOTD displays a message to users when they join the server. This section uses mini message format to style and format the message.
+MOTD отображает сообщение пользователям при входе на сервер. Этот раздел использует формат mini message для стилизации и форматирования сообщения.
 
 ```yaml
 motd:
-  enabled: true # Enable or disable the MOTD feature.
-  delay: 5 # The delay in seconds before the MOTD is shown after a player joins.
-  message: # The message content in mini message format.
-    - "" # Empty line for spacing.
+  enabled: true # Включить или отключить функцию MOTD.
+  delay: 5 # Задержка в секундах перед отображением MOTD после входа игрока.
+  message: # Содержание сообщения в формате mini message.
+    - "" # Пустая строка для отступа.
     - "<gray>   <st>                </st> <aqua><b>Per Player Kits</b><gray> <st>                </st>"
-    - "" # Additional spacing.
-    - "         <white>Type <aqua>/kit<white>, <aqua>/k <white>or <aqua>/pk<white> to get started!"
+    - "" # Дополнительный отступ.
+    - "         <white>Введите <aqua>/kit<white>, <aqua>/k <white>или <aqua>/pk<white> чтобы начать!"
     - ""
     - "<gray>   <st>                                                         "
     - ""
@@ -101,178 +101,178 @@ motd:
 
 ---
 
-### **Scheduled Broadcast**
+### **Периодические трансляции**
 
-Broadcasts messages periodically to all players, using a defined time interval. This section uses mini message format to style and format the message.
+Транслирует сообщения периодически всем игрокам с заданным интервалом времени. Этот раздел использует формат mini message для стилизации и форматирования сообщения.
 
 ```yaml
 scheduled-broadcast:
-  enabled: true # Enable or disable periodic broadcasts.
-  period: 90 # Interval between broadcasts in seconds.
-  messages: # List of messages to broadcast, in mini message format.
-    - "Example message"
+  enabled: true # Включить или отключить периодические трансляции.
+  period: 90 # Интервал между трансляциями в секундах.
+  messages: # Список сообщений для трансляции в формате mini message.
+    - "Пример сообщения"
 ```
 
 ---
 
-### **Kit Room**
+### **Комната китов**
 
-Defines kits and their visual representation in the UI. Kit names are displayed in their default color.
+Определяет киты и их визуальное представление в интерфейсе. Имена китов отображаются в их цвете по умолчанию.
 
 ```yaml
 kitroom:
   items:
     1:
-      name: "OG Vanilla" # Kit name.
-      material: "DIAMOND_SWORD" # Icon representing the kit.
+      name: "OG Vanilla" # Имя кита.
+      material: "DIAMOND_SWORD" # Иконка, представляющая кит.
     2:
-      name: "Training"
+      name: "Тренировка"
       material: "WOODEN_SWORD"
     3:
-      name: "Potions"
+      name: "Зелья"
       material: "SPLASH_POTION"
     4:
-      name: "Armory"
+      name: "Арсенал"
       material: "NETHERITE_SWORD"
     5:
-      name: "Axe & UHC"
+      name: "Топор и UHC"
       material: "SHIELD"
 ```
 
 ---
 
-### **Disabled Command Worlds**
+### **Миры с отключенными командами**
 
-Lists worlds where kit commands are disabled. Players in these worlds will see a custom error message if they attempt to use the commands. This section uses mini message format for styling.
+Список миров, где команды китов отключены. Игроки в этих мирах увидят пользовательское сообщение об ошибке, если попытаются использовать команды. Этот раздел использует формат mini message для стилизации.
 
 ```yaml
 disabled-command-worlds:
-  - "example_world" # Add worlds where kit commands should be restricted.
+  - "example_world" # Добавьте миры, где команды китов должны быть ограничены.
 
-disabled-command-message: "<red>Kits are disabled here!</red>" # Message displayed to players in disabled worlds (MiniMessage format).
+disabled-command-message: "<red>Здесь киты отключены!</red>" # Сообщение, отображаемое игрокам в отключенных мирах (формат MiniMessage).
 ```
 
 ---
 
-### **Public Kits**
+### **Публичные киты**
 
-Allows customization of publicly available kits. By default, this section is commented out and needs to be configured based on requirements. Kit names are displayed in their default color.
+Позволяет настраивать общедоступные киты. По умолчанию этот раздел закомментирован и должен быть настроен в зависимости от требований. Имена китов отображаются в их цвете по умолчанию.
 
 ```yaml
 publickits:
   # 1:
-  #   name: "Kit 1" # Kit name.
-  #   icon: "DIAMOND_SWORD" # Icon for the kit.
+  #   name: "Кит 1" # Имя кита.
+  #   icon: "DIAMOND_SWORD" # Иконка для кита.
 ```
 
 
-### **Messages**
+### **Сообщения**
 
-This section controls the messages broadcast to players when they perform various kit-related actions. Messages use mini message format for styling. Each message type can be individually enabled/disabled and customized with a custom permission node.
+Этот раздел управляет сообщениями, которые транслируются игрокам при выполнении различных действий, связанных с китами. Сообщения используют формат mini message для стилизации. Каждый тип сообщения можно включить/отключить и настроить с помощью пользовательского узла разрешений.
 
 ```yaml
 messages:
-  disable-kit-messages: false # Set to true to disable all kit action messages (e.g. player loaded a kit, player repaired gear, etc.)
+  disable-kit-messages: false # Установите в true, чтобы отключить все сообщения о действиях с китами (например, игрок загрузил кит, игрок починил снаряжение и т.д.).
   player-repaired:
-    enabled: true # Enable or disable this specific message type
-    message: "<gray>%player% repaired their gear</gray>" # Message content in mini message format
-    permission: "perplayerkit.kitnotify" # Permission required to see this message (default permission defaults to true)
+    enabled: true # Включить или отключить этот конкретный тип сообщения
+    message: "<gray>%player% починил своё снаряжение</gray>" # Содержание сообщения в формате mini message
+    permission: "perplayerkit.kitnotify" # Разрешение, необходимое для просмотра этого сообщения (по умолчанию разрешение по умолчанию равно true)
   player-healed:
     enabled: true
-    message: "<gray>%player% healed themselves</gray>"
+    message: "<gray>%player% вылечил себя</gray>"
     permission: "perplayerkit.kitnotify"
   player-opened-kit-room:
     enabled: true
-    message: "<gray>%player% opened the Kit Room</gray>"
+    message: "<gray>%player% открыл комнату китов</gray>"
     permission: "perplayerkit.kitnotify"
   player-loaded-private-kit:
     enabled: true
-    message: "<gray>%player% loaded a kit</gray>"
+    message: "<gray>%player% загрузил кит</gray>"
     permission: "perplayerkit.kitnotify"
   player-loaded-public-kit:
     enabled: true
-    message: "<gray>%player% loaded a public kit</gray>"
+    message: "<gray>%player% загрузил публичный кит</gray>"
     permission: "perplayerkit.kitnotify"
   player-loaded-enderchest:
     enabled: true
-    message: "<gray>%player% loaded an ender chest.</gray>"
+    message: "<gray>%player% загрузил эндер-сундук.</gray>"
     permission: "perplayerkit.kitnotify"
   player-copied-kit:
     enabled: true
-    message: "<gray>%player% copied a kit</gray>"
+    message: "<gray>%player% скопировал кит</gray>"
     permission: "perplayerkit.kitnotify"
   player-copied-ec:
     enabled: true
-    message: "<gray>%player% copied an ender chest</gray>"
+    message: "<gray>%player% скопировал эндер-сундук</gray>"
     permission: "perplayerkit.kitnotify"
   player-regeared:
     enabled: true
-    message: "<gray>%player% regeared</gray>"
+    message: "<gray>%player% пополнил снаряжение</gray>"
     permission: "perplayerkit.kitnotify"
 ```
 
-#### Message Configuration Fields:
+#### Поля конфигурации сообщений:
 
-- **enabled**: Set to `false` to disable a specific message type. When disabled, the message will not be broadcast to any players.
-- **message**: The content of the message in mini message format. Supports the `%player%` placeholder which is replaced with the player's name (or display name if `use-display-name` is enabled).
-- **permission**: The permission node required for players to see this message. Players without this permission will not see the broadcast. Defaults to `perplayerkit.kitnotify` which defaults to `true`.
+- **enabled**: Установите в `false`, чтобы отключить определённый тип сообщения. Если отключено, сообщение не будет транслироваться никому.
+- **message**: Содержание сообщения в формате mini message. Поддерживает плейсхолдер `%player%`, который заменяется именем игрока (или отображаемым именем, если включено `use-display-name`).
+- **permission**: Узел разрешений, необходимый игрокам для просмотра этого сообщения. Игроки без этого разрешения не увидят трансляцию. По умолчанию `perplayerkit.kitnotify`, которое по умолчанию равно `true`.
 
-#### Global Settings:
+#### Глобальные настройки:
 
-- **disable-kit-messages**: Set to `true` to completely suppress all kit action messages. When enabled, players will not see any broadcasts for kit-related actions, regardless of the broadcast-on-player-action feature flag or individual message permissions. This acts as a global on/off switch.
+- **disable-kit-messages**: Установите в `true`, чтобы полностью отключить все сообщения о действиях с китами. Если включено, игроки не будут видеть никаких трансляций о действиях, связанных с китами, независимо от флага функции broadcast-on-player-action или индивидуальных разрешений на сообщения. Это действует как глобальный переключатель вкл/выкл.
 
 ---
 
-### **Sounds**
+### **Звуки**
 
-This section allows you to enable, disable, and customize the sounds played by the plugin.
+Этот раздел позволяет включать, отключать и настраивать звуки, воспроизводимые плагином.
 
 ```yaml
 sounds:
-  enabled: true # Set to false to disable all plugin sounds.
-  # Sound played on successful actions (e.g. saving a kit)
+  enabled: true # Установите в false, чтобы отключить все звуки плагина.
+  # Звук, воспроизводимый при успешных действиях (например, сохранение кита)
   success: ENTITY_PLAYER_LEVELUP
-  # Sound played on failed actions (e.g. attempting to use a disabled command)
+  # Звук, воспроизводимый при неудачных действиях (например, попытка использовать отключенную команду)
   failure: ENTITY_ITEM_BREAK
-  # Sound played when a button is clicked in a GUI
+  # Звук, воспроизводимый при нажатии кнопки в GUI
   click: UI_BUTTON_CLICK
-  # Sound played when a GUI is opened
+  # Звук, воспроизводимый при открытии GUI
   open_gui: UI_BUTTON_CLICK
-  # Sound played when a GUI is closed
+  # Звук, воспроизводимый при закрытии GUI
   close_gui: UI_BUTTON_CLICK
 ```
 
 
-### **Anti-Exploit**
+### **Анти-эксплойт**
 
-This section allows you to enable or disable anti-exploit features, commonly applicable to this plugin.
+Этот раздел позволяет включать или отключать функции защиты от эксплойтов, часто применимые к этому плагину.
 
 ```yaml
 anti-exploit:
-  only-allow-kitroom-items: false #requires that items be in the kitroom before they can be used in a kit.
-  import-filter: false #requires only-allow-kitroom-items to be true. prevents the duplications of items not in the kitroom by using the kit import button.
-  block-spaces-in-commands: false #prevents bypassing command filters.
-  prevent-shulkers-dropping-items: false #prevents shulkers from dropping items when broken. Anti-lag feature.
+  only-allow-kitroom-items: false #требует, чтобы предметы были в комнате китов, прежде чем их можно было использовать в ките.
+  import-filter: false #требует, чтобы only-allow-kitroom-items был true. предотвращает дублирование предметов, которых нет в комнате китов, с помощью кнопки импорта кита.
+  block-spaces-in-commands: false #предотвращает обход фильтров команд.
+  prevent-shulkers-dropping-items: false #предотвращает выпадение предметов из шалкеров при разрушении. Функция анти-лаг.
 ```
 
-### **Regear Command**
+### **Команда пополнения снаряжения (Regear)**
 
-Allows customization of the regear commands which are used on some servers in various competition formats. The `/rg` and `/regear` commands can be configured independently to use different modes.
+Позволяет настраивать команды пополнения снаряжения, используемые на некоторых серверах в различных форматах соревнований. Команды `/rg` и `/regear` можно настроить независимо для использования разных режимов.
 
 ```yaml
 regear:
-  rg-mode: "command" #OPTIONS: command, shulker - Behavior for /rg command
-  regear-mode: "command" #OPTIONS: command, shulker - Behavior for /regear command
-  command-cooldown: 5 #command cooldown in seconds. recommended to be low or 0 if using shulker mode.
-  damage-timer: 5 #time in seconds to wait after taking damage before players can regear
-  allow-while-using-elytra: true #set false to block regearing command while using elytra
+  rg-mode: "command" #ОПЦИИ: command, shulker - Поведение для команды /rg
+  regear-mode: "command" #ОПЦИИ: command, shulker - Поведение для команды /regear
+  command-cooldown: 5 #перезарядка команды в секундах. рекомендуется устанавливать низкое значение или 0, если используется режим шалкера.
+  damage-timer: 5 #время в секундах ожидания после получения урона, прежде чем игроки смогут пополнить снаряжение
+  allow-while-using-elytra: true #установите false, чтобы заблокировать команду пополнения снаряжения во время использования элитр
   #
-  # Allow regearing all items by setting:
+  # Позволить пополнять всё снаряжение, установив:
   # invert-whitelist: true
   # whitelist: []
   #
   #
-  invert-whitelist: false #setting this to true makes the whitelist a blacklist
+  invert-whitelist: false #установка этого значения в true делает белый список чёрным
   whitelist:
     - ENDER_PEARL
     - END_CRYSTAL
@@ -281,34 +281,34 @@ regear:
     - RESPAWN_ANCHOR
 ```
 
-#### Regear Mode Options:
+#### Опции режима пополнения:
 
-- **command**: Directly restocks items from the player's loaded kit (only whitelisted items are restocked)
-- **shulker**: Gives the player a physical regear shulker box that they can place and interact with
+- **command**: Напрямую пополняет предметы из загруженного кита игрока (пополняются только предметы из белого списка)
+- **shulker**: Даёт игроку физический шалкер пополнения снаряжения, который он может поставить и использовать
 
-#### Example Configurations:
+#### Примеры конфигураций:
 
-**Both commands use same mode:**
+**Обе команды используют одинаковый режим:**
 ```yaml
 regear:
   rg-mode: "command"
   regear-mode: "command"
 ```
 
-**Different modes for different commands:**
+**Разные режимы для разных команд:**
 ```yaml
 regear:
-  rg-mode: "shulker"      # /rg gives a shulker
-  regear-mode: "command"  # /regear directly restocks items
+  rg-mode: "shulker"      # /rg даёт шалкер
+  regear-mode: "command"  # /regear напрямую пополняет предметы
 ```
 
 
 
-### **Feature Flags**
+### **Флаги функций**
 
-A number of plugin features and settings. These can be enabled or disabled based on your server's requirements.
+Ряд функций и настроек плагина. Их можно включить или отключить в зависимости от требований вашего сервера.
 ```yaml
-# Various feature flags for the plugin
+# Различные флаги функций для плагина
 feature:
     set-health-on-kit-load: false
     set-hunger-on-kit-load: false
@@ -323,31 +323,31 @@ feature:
     rekit-on-respawn: true
     rekit-on-kill: false
 
-    broadcast-kit-messages: true #broadcasts when a player loads a kit or enderchest
+    broadcast-kit-messages: true #транслирует, когда игрок загружает кит или эндер-сундук
 
-    broadcast-on-player-action: true #broadcasts when a player uses a kit, copies a kit, etc.
+    broadcast-on-player-action: true #транслирует, когда игрок использует кит, копирует кит и т.д.
 
-    send-update-message-on-join: true #sends a message to players with perplayerkit.admin when they join the server if a new version is available
+    send-update-message-on-join: true #отправляет сообщение игрокам с perplayerkit.admin, когда они заходят на сервер, если доступна новая версия
 
-    old-death-drops: false #makes it so players drop items in a condensed area rather than spreading out when they die
+    old-death-drops: false #заставляет игроков сбрасывать предметы в сжатую область, а не распределять при смерти
 ```
 
-#### Feature Flag Descriptions:
+#### Описания флагов функций:
 
-**Kit Loading Features:**
-- **rekit-on-respawn**: Automatically loads the player's last used kit when they respawn after death
-- **rekit-on-kill**: Automatically loads the player's last used kit when they kill another player
-- **broadcast-kit-messages**: Controls whether broadcast messages are sent when players load kits or enderchesets (e.g., "Player loaded a kit"). When set to `false`, these specific kit-loading broadcast messages are suppressed
+**Функции загрузки кита:**
+- **rekit-on-respawn**: Автоматически загружает последний использованный кит игрока, когда он возрождается после смерти
+- **rekit-on-kill**: Автоматически загружает последний использованный кит игрока, когда он убивает другого игрока
+- **broadcast-kit-messages**: Контролирует, отправляются ли трансляции, когда игроки загружают киты или эндер-сундуки (например, "Игрок загрузил кит"). Когда установлено в `false`, эти конкретные трансляции загрузки кита подавляются
 
-**Action Broadcast Features:**
-- **broadcast-on-player-action**: Controls whether broadcast messages are sent for other player actions like copying kits, repairing gear, opening kit room, etc. This does NOT affect kit loading messages (controlled by `broadcast-kit-messages`)
+**Функции трансляции действий:**
+- **broadcast-on-player-action**: Контролирует, отправляются ли трансляции для других действий игрока, таких как копирование китов, починка снаряжения, открытие комнаты китов и т.д. Это НЕ влияет на трансляции загрузки кита (контролируются `broadcast-kit-messages`)
 
-**Health/Hunger Features:**
-- **set-health-on-kit-load**: Sets player health to full when loading a kit
-- **set-hunger-on-kit-load**: Sets player hunger to full when loading a kit
-- **set-saturation-on-kit-load**: Sets player saturation to full when loading a kit
-- **remove-potion-effects-on-kit-load**: Removes all potion effects when loading a kit
-- **heal-on-enderchest-load**: Sets player health to full when loading an enderchest
-- **feed-on-enderchest-load**: Sets player hunger to full when loading an enderchest
-- **set-saturation-on-enderchest-load**: Sets player saturation to full when loading an enderchest
-- **remove-potion-effects-on-enderchest-load**: Removes all potion effects when loading an enderchest
+**Функции Здоровья/Голода:**
+- **set-health-on-kit-load**: Устанавливает полное здоровье игрока при загрузке кита
+- **set-hunger-on-kit-load**: Устанавливает полный голод игрока при загрузке кита
+- **set-saturation-on-kit-load**: Устанавливает полное насыщение игрока при загрузке кита
+- **remove-potion-effects-on-kit-load**: Удаляет все эффекты зелий при загрузке кита
+- **heal-on-enderchest-load**: Устанавливает полное здоровье игрока при загрузке эндер-сундука
+- **feed-on-enderchest-load**: Устанавливает полный голод игрока при загрузке эндер-сундука
+- **set-saturation-on-enderchest-load**: Устанавливает полное насыщение игрока при загрузке эндер-сундука
+- **remove-potion-effects-on-enderchest-load**: Удаляет все эффекты зелий при загрузке эндер-сундука

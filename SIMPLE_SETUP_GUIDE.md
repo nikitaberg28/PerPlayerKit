@@ -1,115 +1,115 @@
-# 🎮 PerPlayerKit - Simple Setup Guide for Server Owners
+# 🎮 PerPlayerKit - Простое руководство по настройке для владельцев серверов
 
-_Don't worry, we'll get you set up step by step! No technical experience needed._
+_Не волнуйтесь, мы настроим всё пошагово! Технический опыт не требуется._
 
-## What is PerPlayerKit?
+## Что такое PerPlayerKit?
 
-PerPlayerKit lets your players create their own custom PvP kits (armor, weapons, potions, etc.) instead of everyone using the same boring kits. Think of it like a "build your own loadout" system for Minecraft PvP!
+PerPlayerKit позволяет вашим игрокам создавать свои собственные кастомные PvP киты (броня, оружие, зелья и т.д.), вместо того, чтобы все использовали одни и те же скучные киты. Представьте это как систему "создай свой собственный набор снаряжения" для PvP в Minecraft!
 
-## 📋 Before You Start
+## 📋 Перед началом
 
-**You need:**
+**Вам нужно:**
 
-- A Minecraft server running Paper or Spigot (version 1.19 or newer)
-- Access to your server files (usually through FTP or a control panel)
+- Minecraft-сервер, работающий на Paper или Spigot (версия 1.19 или новее)
+- Доступ к файлам вашего сервера (обычно через FTP или панель управления)
 
-**Don't have Paper?** Download it from [papermc.io](https://papermc.io/) - it's better than regular Spigot!
-
----
-
-## 🚀 Step 1: Install the Plugin
-
-1. **Download PerPlayerKit** from wherever you got it
-2. **Stop your server** (important!)
-3. **Put the .jar file** in your `plugins` folder
-4. **Start your server** - it will create the config files
-5. **Stop your server again** - we need to edit the config
+**Нет Paper?** Скачайте его на [papermc.io](https://papermc.io/) - он лучше, чем обычный Spigot!
 
 ---
 
-## 🎯 Step 2: Set Up Your Kit Room
+## 🚀 Шаг 1: Установка плагина
 
-The kitroom is where players pick items for their kits. You need to create these in-game.
-
-### Creating Kit Rooms:
-
-1. **Start your server**
-2. **Join as an admin** (make sure you have OP or the `perplayerkit.admin` permission)
-3. **Type `/kit`** - this opens the main plugin menu
-4. **Click the Nether Star** - this opens the kit room edito
-5. **For each kit room:**
-   - Fill the GUI with items you want players to choose from
-   - Hover over the **barrier** block in the cornor and _shift right click_ to save the contents of the menu
-   - You can adjust the names and items representing each page of the kit room in the config
-
-### Example Kit Room Ideas:
-
-- **Crystal PvP**: End crystals, obsidian, armor, totems
-- **Sword PvP**: Swords, shields, armor, food
-- **UHC**: Golden apples, potions, bows, materials
-- **Axe Combat**: Axes, shields, specialized gear
-- **Utility**: Potions, wind charges, ender pearls, misc items
+1. **Скачайте PerPlayerKit** откуда бы вы его ни взяли
+2. **Остановите ваш сервер** (важно!)
+3. **Поместите .jar файл** в вашу папку `plugins`
+4. **Запустите сервер** - он создаст файлы конфигурации
+5. **Остановите сервер снова** - нам нужно отредактировать конфиг
 
 ---
 
-## 👥 Step 3: Set Up Permissions
+## 🎯 Шаг 2: Настройка комнаты китов
 
-_It is recommended to setup specific permissions instead of using the general ones but this will due for a basic setup._
-Your players need permissions to use the plugin. Add these to your permissions plugin:
+Комната китов - это то место, где игроки выбирают предметы для своих китов. Вам нужно создать их в игре.
 
-### For Regular Players:
+### Создание комнат китов:
+
+1. **Запустите ваш сервер**
+2. **Зайдите как администратор** (убедитесь, что у вас есть OP или разрешение `perplayerkit.admin`)
+3. **Введите `/kit`** - это откроет главное меню плагина
+4. **Нажмите на Звезду Незера** - это откроет редактор комнаты китов
+5. **Для каждой комнаты китов:**
+   - Заполните GUI предметами, которые вы хотите, чтобы игроки могли выбрать
+   - Наведите курсор на **блок барьера** в углу и _сделайте shift-правый клик_, чтобы сохранить содержимое меню
+   - Вы можете настроить названия и предметы, представляющие каждую страницу комнаты китов, в конфиге
+
+### Примеры идей для комнат китов:
+
+- **Crystal PvP**: Кристаллы энда, обсидиан, броня, тотемы
+- **Sword PvP**: Мечи, щиты, броня, еда
+- **UHC**: Золотые яблоки, зелья, луки, материалы
+- **Axe Combat**: Топоры, щиты, специализированное снаряжение
+- **Utility**: Зелья, ветровые заряды, жемчужины эндера, прочие предметы
+
+---
+
+## 👥 Шаг 3: Настройка разрешений
+
+_Рекомендуется настроить конкретные разрешения вместо использования общих, но этого достаточно для базовой настройки._
+Вашим игрокам нужны разрешения для использования плагина. Добавьте их в ваш плагин разрешений:
+
+### Для обычных игроков:
 
 ```
 perplayerkit.use
 ```
 
-_This gives them access to everything they need!_
+_Это даст им доступ ко всему, что нужно!_
 
-### For Staff Members:
+### Для сотрудников:
 
 ```
 perplayerkit.staff
 ```
 
-_This lets them inspect player kits and moderate_
+_Это позволяет им просматривать киты игроков и модерировать_
 
-### For Admins:
+### Для администраторов:
 
 ```
 perplayerkit.admin
 ```
 
-_Full access to everything_
+_Полный доступ ко всему_
 
-**Don't have a permissions plugin?** Get LuckPerms - it's the best and easiest to use!
-
----
-
-## 🎮 Step 4: Tell Your Players How to Use It
-
-Share this with your players:
-
-### Basic Commands:
-
-- **`/kit`** or **`/k`** - Open the main kit menu
-- **`/k1`** through **`/k9`** - Quickly load kit 1-9
-
-### How to Make a Kit:
-
-1. Type `/kit` to open the menu
-2. Click "Create New Kit"
-3. Choose items from the kit rooms you set up
-4. Arrange them in your inventory how you want
-5. Save the kit with a name
-6. Done! You can now load this kit anytime
+**Нет плагина разрешений?** Установите LuckPerms - это лучший и самый простой в использовании!
 
 ---
 
-## 🔧 Optional: Useful Settings
+## 🎮 Шаг 4: Расскажите игрокам, как это использовать
 
-Here are some settings you might want to change in your config:
+Поделитесь этим с вашими игроками:
 
-### Make Players Heal When They Load Kits:
+### Основные команды:
+
+- **`/kit`** или **`/k`** - Открыть главное меню китов
+- **`/k1`** до **`/k9`** - Быстро загрузить кит 1-9
+
+### Как создать кит:
+
+1. Введите `/kit`, чтобы открыть меню
+2. Нажмите "Создать новый кит"
+3. Выберите предметы из комнат китов, которые вы настроили
+4. Расположите их в инвентаре так, как вам нужно
+5. Сохраните кит с именем
+6. Готово! Теперь вы можете загружать этот кит в любое время
+
+---
+
+## 🔧 Опционально: Полезные настройки
+
+Вот несколько настроек, которые вы можете захотеть изменить в вашем конфиге:
+
+### Заставьте игроков восстанавливаться, когда они загружают киты:
 
 ```yaml
 feature:
@@ -117,14 +117,14 @@ feature:
   set-hunger-on-kit-load: true
 ```
 
-### Give Players Their Kit Back When They Respawn:
+### Верните игроку его кит, когда он возрождается:
 
 ```yaml
 feature:
   rekit-on-respawn: true
 ```
 
-### Disable Kits in Certain Worlds:
+### Отключить киты в определённых мирах:
 
 ```yaml
 disabled-command-worlds:
@@ -134,49 +134,49 @@ disabled-command-worlds:
 
 ---
 
-## 🆘 Common Problems & Solutions
+## 🆘 Распространённые проблемы и решения
 
-### "Players can't use /kit command"
+### "Игроки не могут использовать команду /kit"
 
-- **Fix**: Check permissions! They need `perplayerkit.use`
+- **Решение**: Проверьте разрешения! Им нужно `perplayerkit.use`
 
-### "Kit rooms are empty"
+### "Комнаты китов пусты"
 
-- **Fix**: You, the admin, need to set them up with as explained above
+- **Решение**: Вы, администратор, должны настроить их, как объяснено выше
 
-### "Plugin won't start"
+### "Плагин не запускается"
 
-- **Fix**: Make sure you're using Paper/Spigot 1.19+ and Java 17+
+- **Решение**: Убедитесь, что вы используете Paper/Spigot 1.19+ и Java 17+
 
-### "Database errors"
+### "Ошибки базы данных"
 
-- **Fix**: Use SQLite unless you specifically need MySQL
+- **Решение**: Используйте SQLite, если только вам не нужен MySQL
 
-### "Items are disappearing from player kits"
+### "Предметы исчезают из китов игроков"
 
-- **Fix**: This is the anti-exploit filter working! By default, players can only use items that exist in your kit rooms. If you want to allow all items, set `only-allow-kitroom-items: false` in your config.yml under the `anti-exploit` section.
-
----
-
-## 🎉 You're Done!
-
-Your players can now:
-
-- Create up to 9 custom kits each
-- Share kits with friends
-- Quickly load their favorite setups
-- Have way more fun in PvP!
-
-**Need help?** Join the Discord: [https://discord.gg/5djuBSKWuV](https://discord.gg/5djuBSKWuV)
+- **Решение**: Это работает фильтр защиты от эксплойтов! По умолчанию игроки могут использовать только предметы, которые существуют в ваших комнатах китов. Если вы хотите разрешить все предметы, установите `only-allow-kitroom-items: false` в вашем config.yml в разделе `anti-exploit`.
 
 ---
 
-## 📚 Want More Advanced Features?
+## 🎉 Готово!
 
-Once you're comfortable with the basics, check out:
+Ваши игроки теперь могут:
 
-- [CONFIG.md](./CONFIG.md) - All configuration options
-- [COMMANDS.md](./COMMANDS.md) - Complete command list
-- [API.md](./API.md) - For developers
+- Создавать до 9 кастомных китов каждый
+- Делиться китами с друзьями
+- Быстро загружать свои любимые наборы
+- Гораздо больше веселиться в PvP!
 
-**Remember**: Start simple! You can always add more features later once your players are used to the plugin.
+**Нужна помощь?** Присоединяйтесь к Discord: [https://discord.gg/5djuBSKWuV](https://discord.gg/5djuBSKWuV)
+
+---
+
+## 📚 Хотите больше продвинутых функций?
+
+Когда вы освоитесь с основами, посмотрите:
+
+- [CONFIG.md](./CONFIG.md) - Все параметры конфигурации
+- [COMMANDS.md](./COMMANDS.md) - Полный список команд
+- [API.md](./API.md) - Для разработчиков
+
+**Помните**: Начинайте с простого! Вы всегда можете добавить больше функций позже, когда ваши игроки привыкнут к плагину.

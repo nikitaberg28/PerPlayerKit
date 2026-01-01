@@ -1,57 +1,68 @@
 /*
  * Copyright 2022-2025 Noah Ross
  *
- * This file is part of PerPlayerKit.
+ * Этот файл является частью PerPlayerKit.
  *
- * PerPlayerKit is free software: you can redistribute it and/or modify it under
- * the terms of the GNU Affero General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * PerPlayerKit — свободное программное обеспечение: вы можете распространять
+ * и/или изменять его в соответствии с условиями GNU Affero General Public License,
+ * опубликованной Free Software Foundation, либо версии 3 Лицензии, либо (по вашему
+ * выбору) любой более поздней версии.
  *
- * PerPlayerKit is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for
- * more details.
+ * PerPlayerKit распространяется в надежде, что он будет полезен, но БЕЗ КАКОЙ-ЛИБО
+ * ГАРАНТИИ; даже без подразумеваемой гарантии ТОВАРНОГО ВИДА или ПРИГОДНОСТИ ДЛЯ
+ * ОПРЕДЕЛЕННОЙ ЦЕЛИ. Для получения дополнительных сведений см. GNU Affero General Public License.
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with PerPlayerKit. If not, see <https://www.gnu.org/licenses/>.
+ * Вы должны были получить копию GNU Affero General Public License вместе с PerPlayerKit.
+ * Если это не так, см. <https://www.gnu.org/licenses/>.
  */
 package dev.noah.perplayerkit.commands;
 
-import dev.noah.perplayerkit.util.DisabledCommand;
-import dev.noah.perplayerkit.KitManager;
+import dev.noah.perplayerkit.util.DisabledCommand; // Утилита для проверки, разрешена ли команда в мире
+import dev.noah.perplayerkit.KitManager;           // Менеджер китов и эндер-сундуков
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandExecutor;          // Интерфейс для обработки команд
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.UUID;
+import java.util.UUID; // Универсальный идентификатор игрока
 
+// Команда для быстрой загрузки эндер-сундука по номеру, введённому в виде алиаса команды (например, /ec3 или /enderchest5)
 public class ShortECCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
+        // Проверяем, является ли отправитель команды игроком
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("Only players can use this command.");
+            sender.sendMessage("Только игроки могут использовать эту команду.");
             return true;
         }
 
+        // Проверяем, заблокирована ли команда в мире, где находится игрок
         if (DisabledCommand.isBlockedInWorld(player)) {
-            return true;
+            return true; // Если команда заблокирована, просто завершаем обработку
         }
 
-        UUID uuid = player.getUniqueId();
+        UUID uuid = player.getUniqueId(); // Получаем уникальный идентификатор игрока
 
+        // Проверяем, соответствует ли метка команды шаблону ec[1-9] (например, ec1, ec2, ..., ec9)
         if (label.matches("ec[1-9]")) {
-            int ecNumber = Integer.parseInt(label.substring(2)); // Extract the number from the label
+            // Извлекаем номер эндер-сундука из метки команды (например, из "ec3" получаем "3")
+            int ecNumber = Integer.parseInt(label.substring(2));
+            // Загружаем эндер-сундук с указанным номером для игрока
             KitManager.get().loadEnderchest(player, ecNumber);
-        } else if (label.matches("enderchest[1-9]")) {
-            int ecNumber = Integer.parseInt(label.substring(10)); // Extract the number from the label
+        }
+        // Проверяем, соответствует ли метка команды шаблону enderchest[1-9] (например, enderchest1, ..., enderchest9)
+        else if (label.matches("enderchest[1-9]")) {
+            // Извлекаем номер эндер-сундука из метки команды (например, из "enderchest5" получаем "5")
+            int ecNumber = Integer.parseInt(label.substring(10));
+            // Загружаем эндер-сундук с указанным номером для игрока
             KitManager.get().loadEnderchest(player, ecNumber);
-        } else {
-            player.sendMessage("Invalid command label.");
+        }
+        // Если метка команды не соответствует ни одному из допустимых шаблонов
+        else {
+            player.sendMessage("Неверная метка команды.");
         }
 
         return true;

@@ -1,49 +1,49 @@
 /*
  * Copyright 2022-2025 Noah Ross
  *
- * This file is part of PerPlayerKit.
+ * Этот файл является частью PerPlayerKit.
  *
- * PerPlayerKit is free software: you can redistribute it and/or modify it under
- * the terms of the GNU Affero General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * PerPlayerKit — свободное программное обеспечение: вы можете распространять
+ * и/или изменять его в соответствии с условиями GNU Affero General Public License,
+ * опубликованной Free Software Foundation, либо версии 3 Лицензии, либо (по вашему
+ * выбору) любой более поздней версии.
  *
- * PerPlayerKit is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for
- * more details.
+ * PerPlayerKit распространяется в надежде, что он будет полезен, но БЕЗ КАКОЙ-ЛИБО
+ * ГАРАНТИИ; даже без подразумеваемой гарантии ТОВАРНОГО ВИДА или ПРИГОДНОСТИ ДЛЯ
+ * ОПРЕДЕЛЕННОЙ ЦЕЛИ. Для получения дополнительных сведений см. GNU Affero General Public License.
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with PerPlayerKit. If not, see <https://www.gnu.org/licenses/>.
+ * Вы должны были получить копию GNU Affero General Public License вместе с PerPlayerKit.
+ * Если это не так, см. <https://www.gnu.org/licenses/>.
  */
 package dev.noah.perplayerkit.commands;
 
-import dev.noah.perplayerkit.KitManager;
-import dev.noah.perplayerkit.gui.GUI;
-import dev.noah.perplayerkit.util.BroadcastManager;
-import dev.noah.perplayerkit.util.SoundManager;
+import dev.noah.perplayerkit.KitManager;        // Менеджер китов и эндер-сундуков
+import dev.noah.perplayerkit.gui.GUI;           // Класс для работы с графическим интерфейсом
+import dev.noah.perplayerkit.util.BroadcastManager; // Утилита для отправки сообщений
+import dev.noah.perplayerkit.util.SoundManager;     // Утилита для воспроизведения звуков
 
-import org.bukkit.Bukkit;
+import org.bukkit.Bukkit;                        // Основной класс API Bukkit
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandExecutor;       // Интерфейс для обработки команд
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.TabCompleter;          // Интерфейс для автодополнения команд
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.Plugin;                 // Представление плагина
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletableFuture;  // Для асинхронного выполнения
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static dev.noah.perplayerkit.commands.InspectCommandUtil.*;
+import static dev.noah.perplayerkit.commands.InspectCommandUtil.*; // Импорт статических полей и методов из утилиты
 
+// Команда для просмотра чужого кита (только для модераторов)
 public class InspectKitCommand implements CommandExecutor, TabCompleter {
-    private final Plugin plugin;
+    private final Plugin plugin; // Ссылка на экземпляр плагина
 
     public InspectKitCommand(Plugin plugin) {
         this.plugin = plugin;
@@ -52,91 +52,103 @@ public class InspectKitCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
                              @NotNull String label, @NotNull String[] args) {
+        // Проверяем, является ли отправитель команды игроком
         if (!(sender instanceof Player player)) {
+            // Если нет, отправляем сообщение об ошибке
             sender.sendMessage(ERROR_PREFIX.append(
-                    mm.deserialize("<red>This command can only be executed by players.</red>")).toString());
+                    mm.deserialize("<red>Эту команду могут выполнить только игроки.</red>")).toString());
             return true;
         }
 
+        // Проверяем, есть ли у игрока разрешение на использование команды
         if (!player.hasPermission("perplayerkit.inspect")) {
             BroadcastManager.get().sendComponentMessage(player,
                     ERROR_PREFIX.append(
-                            mm.deserialize("<red>You don't have permission to use this command.</red>")));
+                            mm.deserialize("<red>У вас нет разрешения на использование этой команды.</red>")));
             SoundManager.playFailure(player);
             return true;
         }
 
+        // Проверяем, передано ли нужное количество аргументов (имя/uuid игрока и слот)
         if (args.length < 2) {
-            showUsage(player, "inspectkit");
+            // Если нет, показываем правильное использование команды
+            showUsage(player, "inspectkit"); // "inspectkit" - название команды просмотра кита
             return true;
         }
 
-        // Parse slot number
+        // Парсим номер слота
         int slot;
         try {
-            slot = Integer.parseInt(args[1]);
+            slot = Integer.parseInt(args[1]); // args[1] - это номер слота
+            // Проверяем, входит ли слот в допустимый диапазон (MIN_SLOT - MAX_SLOT, обычно 1-9)
             if (slot < MIN_SLOT || slot > MAX_SLOT) {
-                throw new NumberFormatException();
+                throw new NumberFormatException(); // Выбрасываем исключение, если слот вне диапазона
             }
         } catch (NumberFormatException e) {
+            // Если аргумент не является числом или вне диапазона
             BroadcastManager.get().sendComponentMessage(player,
                     ERROR_PREFIX.append(
-                            mm.deserialize("<red>Slot must be a number between " +
-                                    MIN_SLOT + " and " + MAX_SLOT + ".</red>")));
+                            mm.deserialize("<red>Слот должен быть числом от " +
+                                    MIN_SLOT + " до " + MAX_SLOT + ".</red>")));
             SoundManager.playFailure(player);
             return true;
         }
 
-        // Resolve player identifier asynchronously
-        CompletableFuture<Void> future = resolvePlayerIdentifierAsync(args[0])
-                .thenCompose(targetUuid -> {
+        // Асинхронно разрешаем идентификатор игрока (имя -> UUID)
+        CompletableFuture<Void> future = resolvePlayerIdentifierAsync(args[0]) // args[0] - имя или UUID игрока
+                .thenCompose(targetUuid -> { // thenCompose используется для цепочки асинхронных операций
                     if (targetUuid == null) {
-                        // Player not found - schedule error message on main thread
+                        // Если игрок не найден
+                        // Планируем отправку сообщения об ошибке в основном потоке Bukkit
                         Bukkit.getScheduler().runTask(plugin, () -> {
                             BroadcastManager.get().sendComponentMessage(player,
                                     ERROR_PREFIX.append(
-                                            mm.deserialize("<red>Could not find a player with that name or UUID.</red>")));
+                                            mm.deserialize("<red>Не удалось найти игрока с таким именем или UUID.</red>")));
                             SoundManager.playFailure(player);
                         });
-                        return CompletableFuture.completedFuture(null);
+                        return CompletableFuture.completedFuture(null); // Завершаем цепочку
                     }
 
-                    // Check if player is online first
+                    // Проверяем, онлайн ли целевой игрок
                     Player targetPlayer = Bukkit.getPlayer(targetUuid);
 
-                    // Load player data asynchronously
+                    // Асинхронно загружаем данные игрока из базы данных, если он оффлайн
                     return CompletableFuture.runAsync(() -> {
                         if (targetPlayer == null) {
-                            // Only load from DB if player is offline
+                            // Загружаем данные только если игрок оффлайн
                             KitManager.get().loadPlayerDataFromDB(targetUuid);
                         }
-                    }).thenRun(() -> {
-                        // Run on the main thread after data is loaded
+                    }).thenRun(() -> { // После загрузки данных
+                        // Планируем выполнение в основном потоке Bukkit
                         Bukkit.getScheduler().runTask(plugin, () -> {
+                            // Проверяем, есть ли у целевого игрока кит в указанном слоте
                             if (KitManager.get().hasKit(targetUuid, slot)) {
+                                // Если есть, открываем GUI для просмотра
                                 GUI gui = new GUI(plugin);
-                                gui.InspectKit(player, targetUuid, slot);
+                                gui.InspectKit(player, targetUuid, slot); // Метод открытия GUI просмотра
                             } else {
-                                String targetName = getPlayerName(targetUuid);
+                                // Если нет, отправляем сообщение об ошибке
+                                String targetName = getPlayerName(targetUuid); // Получаем имя целевого игрока
 
                                 BroadcastManager.get().sendComponentMessage(player,
                                         ERROR_PREFIX.append(
                                                 mm.deserialize("<red>" + targetName +
-                                                        " does not have a kit in slot " + slot + "</red>")));
+                                                        " не имеет кита в слоте " + slot + "</red>")));
                                 SoundManager.playFailure(player);
                             }
                         });
                     });
                 });
 
-        // Handle exceptions
+        // Обработка исключений, которые могли возникнуть в цепочке асинхронных операций
         future.exceptionally(ex -> {
+            // Планируем отправку сообщения об ошибке в основном потоке Bukkit
             Bukkit.getScheduler().runTask(plugin, () -> {
-                plugin.getLogger().severe("Error loading kit data: " + ex.getMessage());
+                plugin.getLogger().severe("Ошибка при загрузке данных кита: " + ex.getMessage());
                 BroadcastManager.get().sendComponentMessage(player,
                         ERROR_PREFIX.append(
-                                mm.deserialize("<red>An error occurred while loading kit data. " +
-                                        "See console for details.</red>")));
+                                mm.deserialize("<red>Произошла ошибка при загрузке данных кита. " +
+                                        "См. консоль для подробностей.</red>")));
                 SoundManager.playFailure(player);
             });
             return null;
@@ -145,42 +157,45 @@ public class InspectKitCommand implements CommandExecutor, TabCompleter {
         return true;
     }
 
+    // Метод для автодополнения команды (TabCompleter)
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender,
                                                 @NotNull Command command,
                                                 @NotNull String label,
                                                 @NotNull String[] args) {
+        // Проверяем, является ли отправитель игроком и имеет ли он разрешение
         if (!(sender instanceof Player) || !sender.hasPermission("perplayerkit.inspect")) {
-            return List.of();
+            return List.of(); // Возвращаем пустой список, если нет прав
         }
 
         if (args.length == 1) {
+            // Автодополнение для первого аргумента (имя или UUID игрока)
             String input = args[0].toLowerCase();
 
-            // Add online player names
+            // Добавляем имена онлайн-игроков
             List<String> completions = new ArrayList<>(Bukkit.getOnlinePlayers().stream()
-                    .map(Player::getName)
-                    .filter(name -> name.toLowerCase().startsWith(input))
+                    .map(Player::getName) // Получаем имена онлайн-игроков
+                    .filter(name -> name.toLowerCase().startsWith(input)) // Фильтруем по введённому тексту
                     .toList());
 
-            // Add UUIDs if the input looks like it might be a UUID
+            // Добавляем UUID, если введённый текст похож на UUID
             if (input.length() >= 4 && input.contains("-")) {
                 completions.addAll(Bukkit.getOnlinePlayers().stream()
-                        .map(Player::getUniqueId)
+                        .map(Player::getUniqueId) // Получаем UUID онлайн-игроков
                         .map(UUID::toString)
-                        .filter(uuid -> uuid.startsWith(input))
+                        .filter(uuid -> uuid.startsWith(input)) // Фильтруем по введённому тексту
                         .toList());
             }
 
             return completions;
         } else if (args.length == 2) {
-            // Return slot numbers for second argument
-            return IntStream.rangeClosed(MIN_SLOT, MAX_SLOT)
-                    .mapToObj(String::valueOf)
-                    .filter(slot -> slot.startsWith(args[1]))
-                    .collect(Collectors.toList());
+            // Автодополнение для второго аргумента (номер слота)
+            return IntStream.rangeClosed(MIN_SLOT, MAX_SLOT) // Создаём поток чисел от MIN_SLOT до MAX_SLOT
+                    .mapToObj(String::valueOf) // Преобразуем числа в строки
+                    .filter(slot -> slot.startsWith(args[1])) // Фильтруем по введённому тексту
+                    .collect(Collectors.toList()); // Собираем в список
         }
 
-        return new ArrayList<>();
+        return new ArrayList<>(); // Возвращаем пустой список в других случаях
     }
 }

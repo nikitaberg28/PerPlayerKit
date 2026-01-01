@@ -1,30 +1,29 @@
 /*
  * Copyright 2022-2025 Noah Ross
  *
- * This file is part of PerPlayerKit.
+ * Этот файл является частью PerPlayerKit.
  *
- * PerPlayerKit is free software: you can redistribute it and/or modify it under
- * the terms of the GNU Affero General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * PerPlayerKit — свободное программное обеспечение: вы можете распространять
+ * и/или изменять его в соответствии с условиями GNU Affero General Public License,
+ * опубликованной Free Software Foundation, либо версии 3 Лицензии, либо (по вашему
+ * выбору) любой более поздней версии.
  *
- * PerPlayerKit is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for
- * more details.
+ * PerPlayerKit распространяется в надежде, что он будет полезен, но БЕЗ КАКОЙ-ЛИБО
+ * ГАРАНТИИ; даже без подразумеваемой гарантии ТОВАРНОГО ВИДА или ПРИГОДНОСТИ ДЛЯ
+ * ОПРЕДЕЛЕННОЙ ЦЕЛИ. Для получения дополнительных сведений см. GNU Affero General Public License.
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with PerPlayerKit. If not, see <https://www.gnu.org/licenses/>.
+ * Вы должны были получить копию GNU Affero General Public License вместе с PerPlayerKit.
+ * Если это не так, см. <https://www.gnu.org/licenses/>.
  */
 package dev.noah.perplayerkit.commands;
 
-import dev.noah.perplayerkit.KitRoomDataManager;
-import org.bukkit.ChatColor;
+import dev.noah.perplayerkit.KitRoomDataManager; // Менеджер данных "комнаты китов"
+import org.bukkit.ChatColor;                      // Для цветного текста в сообщениях
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandExecutor;        // Интерфейс для обработки команд
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
-import dev.noah.perplayerkit.util.SoundManager;
+import org.bukkit.command.TabCompleter;           // Интерфейс для автодополнения команд
+import dev.noah.perplayerkit.util.SoundManager; // Утилита для воспроизведения звуков
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,41 +31,62 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+// Команда для загрузки/сохранения "комнаты китов" в/из базы данных
 public class KitRoomCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        // Проверяем, передан ли один аргумент (load или save)
         if (args.length == 1) {
+            // Если аргумент "load"
             if (args[0].equalsIgnoreCase("load")) {
+                // Загружаем данные "комнаты китов" из базы данных
                 KitRoomDataManager.get().loadFromDB();
-                sender.sendMessage(ChatColor.GREEN + "Kit Room loaded from SQL");
+                // Отправляем сообщение об успешной загрузке
+                sender.sendMessage(ChatColor.GREEN + "Комната китов загружена из SQL");
+                // Если отправитель - игрок, проигрываем звук успеха
                 if (sender instanceof Player p) SoundManager.playSuccess(p);
-            } else if (args[0].equalsIgnoreCase("save")) {
+            }
+            // Если аргумент "save"
+            else if (args[0].equalsIgnoreCase("save")) {
+                // Асинхронно сохраняем данные "комнаты китов" в базу данных
                 KitRoomDataManager.get().saveToDBAsync();
-                sender.sendMessage(ChatColor.GREEN + "Kit Room saved to SQL");
+                // Отправляем сообщение об успешном сохранении
+                sender.sendMessage(ChatColor.GREEN + "Комната китов сохранена в SQL");
+                // Если отправитель - игрок, проигрываем звук успеха
                 if (sender instanceof Player p) SoundManager.playSuccess(p);
-            } else {
-                sender.sendMessage(ChatColor.RED + "Incorrect Usage!");
+            }
+            // Если аргумент не "load" и не "save"
+            else {
+                // Отправляем сообщение об ошибке
+                sender.sendMessage(ChatColor.RED + "Неправильное использование!");
                 sender.sendMessage("/kitroom <load/save>");
+                // Если отправитель - игрок, проигрываем звук неудачи
                 if (sender instanceof Player p) SoundManager.playFailure(p);
             }
-        } else {
-            sender.sendMessage(ChatColor.RED + "Incorrect Usage!");
+        }
+        // Если количество аргументов не равно 1
+        else {
+            // Отправляем сообщение об ошибке
+            sender.sendMessage(ChatColor.RED + "Неправильное использование!");
             sender.sendMessage("/kitroom <load/save>");
+            // Если отправитель - игрок, проигрываем звук неудачи
             if (sender instanceof Player p) SoundManager.playFailure(p);
         }
-
 
         return true;
     }
 
+    // Метод для автодополнения команды (TabCompleter)
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+        // Если введён только один аргумент, предлагаем варианты "save" и "load"
         if (args.length == 1) {
             List<String> list = new ArrayList<>();
-            list.add("save");
-            list.add("load");
+            list.add("save");  // Сохранить
+            list.add("load");  // Загрузить
             return list;
         }
+        // В остальных случаях возвращаем null (автодополнение не предоставляется)
         return null;
     }
 }

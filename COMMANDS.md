@@ -1,14 +1,14 @@
-# PerPlayerKit Command Docs
+# Документация по командам PerPlayerKit
 
-- **Version:** 1.6.2
-- **Author(s):** Noah Ross
-- **Minimum Spigot/Paper Version:** 1.19
+- **Версия:** 1.7.0
+- **Автор(ы):** Noah Ross, NikitaBerg(автор перевода)
+- **Минимальная версия Spigot/Paper:** 1.19
 
-## Commands
+## Команды
 
-The following table outlines each command, its usage, aliases, and permissions required.
+В следующей таблице перечислены каждая команда, её использование, псевдонимы и требуемые разрешения.
 
-| Command             | Aliases                  | Permission                     |
+| Команда             | Псевдонимы               | Разрешение                     |
 |---------------------|--------------------------|--------------------------------|
 | `perplayerkit`      | `N/A`                    | `perplayerkit.admin`           |
 | `aboutperplayerkit` | `N/A`                    | `N/A`                          |
@@ -46,42 +46,42 @@ The following table outlines each command, its usage, aliases, and permissions r
 | `heal`              | `N/A`                    | `perplayerkit.heal`            |
 | `repair`            | `N/A`                    | `perplayerkit.repair`          |
 
-## Regear Command Details
+## Подробности команды пополнения снаряжения (Regear)
 
-The regear system allows players to restock items from their loaded kit. The behavior of the `/rg` and `/regear` commands can be configured independently:
+Система пополнения снаряжения позволяет игрокам пополнять предметы из загруженного кита. Поведение команд `/rg` и `/regear` можно настраивать независимо:
 
-### Modes
+### Режимы
 
-**Command Mode**: Directly restocks whitelisted items from the player's loaded kit
-- Cooldown applies between uses
-- Damage timer prevents regearing while in combat
-- Only whitelisted items are restocked
+**Режим команды**: Напрямую пополняет предметы из белого списка из загруженного кита игрока
+- Применяется перезарядка между использованиями
+- Таймер урона предотвращает пополнение снаряжения во время боя
+- Пополняются только предметы из белого списка
 
-**Shulker Mode**: Gives the player a regear shulker box
-- Player places the shulker on the ground to open a special interface
-- Player clicks the regear shell inside to trigger the restock
-- Cooldown applies between command uses
-- Damage timer prevents regearing while in combat
+**Режим шалкера**: Даёт игроку шалкер пополнения снаряжения
+- Игрок ставит шалкер на землю, чтобы открыть специальный интерфейс
+- Игрок нажимает на оболочку пополнения внутри, чтобы вызвать пополнение
+- Применяется перезарядка между использованиями команды
+- Таймер урона предотвращает пополнение снаряжения во время боя
 
-### Configuration
+### Конфигурация
 
-Both `/rg` and `/regear` can use different modes. See **CONFIG.md** → **Regear Command** for configuration options (`rg-mode` and `regear-mode`).
+Обе команды `/rg` и `/regear` могут использовать разные режимы. См. **CONFIG.md** → **Команда пополнения снаряжения** для параметров конфигурации (`rg-mode` и `regear-mode`).
 
-## Permissions
+## Разрешения
 
-The following table outlines each top-level permission and the sub-permissions it grants.
+В следующей таблице перечислены каждое разрешение верхнего уровня и разрешения, которые оно предоставляет.
 
-| Permission         | Grants                                                                                                                                                                                                                                                                                                                                                                                       |
+| Разрешение         | Предоставляет                                                                                                                                                                                                                                                                                                                                                                                       |
 |--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `kit.admin`        | `perplayerkit.admin`                                                                                                                                                                                                                                                                                                                                                                         |
 | `kit.staff`        | `perplayerkit.staff`                                                                                                                                                                                                                                                                                                                                                                         |
 | `kit.use`          | `perplayerkit.use`                                                                                                                                                                                                                                                                                                                                                                           |
 | `perplayerkit.use` | `perplayerkit.menu`, `perplayerkit.copykit`, `perplayerkit.sharekit`, `perplayerkit.shareenderchest`, `perplayerkit.swapkit`, `perplayerkit.deletekit`, `perplayerkit.publickit`, `perplayerkit.kit`, `perplayerkit.enderchest`, `perplayerkit.viewenderchest`, `perplayerkit.regear`, `perplayerkit.heal`, `perplayerkit.repair`, `perplayerkit.rekitonrespawn`, `perplayerkit.rekitonkill` |
 
-## Message Notifications
+## Уведомления сообщениями
 
-The following permission controls which kit-related action messages players see:
+Следующее разрешение контролирует, какие уведомления о действиях, связанных с китами, видят игроки:
 
-| Permission              | Purpose                                                                                          |
+| Разрешение              | Назначение                                                                                          |
 |-------------------------|--------------------------------------------------------------------------------------------------|
-| `perplayerkit.kitnotify` | Allows players to see notifications about kit-related actions (e.g., when other players load kits, repair gear, etc.). **Defaults to `true`** - all players can see these messages by default. Set to `false` to hide all kit action messages from a player. |
+| `perplayerkit.kitnotify` | Позволяет игрокам видеть уведомления о действиях, связанных с китами (например, когда другие игроки загружают киты, чинят снаряжение и т.д.). **По умолчанию `true`** - все игроки могут видеть эти сообщения по умолчанию. Установите в `false`, чтобы скрыть все сообщения о действиях с китами от игрока. |

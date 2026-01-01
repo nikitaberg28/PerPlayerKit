@@ -1,20 +1,19 @@
 /*
  * Copyright 2022-2025 Noah Ross
  *
- * This file is part of PerPlayerKit.
+ * Этот файл является частью PerPlayerKit.
  *
- * PerPlayerKit is free software: you can redistribute it and/or modify it under
- * the terms of the GNU Affero General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * PerPlayerKit - свободное программное обеспечение: вы можете распространять и/или изменять его
+ * в соответствии с условиями лицензии GNU Affero General Public License, опубликованной
+ * Free Software Foundation, либо версии 3 Лицензии, либо (по вашему
+ * выбору) любой более поздней версии.
  *
- * PerPlayerKit is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for
- * more details.
+ * PerPlayerKit распространяется в надежде, что он будет полезен, но БЕЗ КАКОЙ-ЛИБО
+ * ГАРАНТИИ; даже без подразумеваемой гарантии ТОВАРНОГО ВИДА или ПРИГОДНОСТИ
+ * ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ. Подробнее см. в лицензии GNU Affero General Public License.
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with PerPlayerKit. If not, see <https://www.gnu.org/licenses/>.
+ * Вы должны были получить копию лицензии GNU Affero General Public License
+ * вместе с PerPlayerKit. Если нет, см. <https://www.gnu.org/licenses/>.
  */
 package dev.noah.perplayerkit;
 
@@ -42,281 +41,281 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.ipvp.canvas.MenuFunctionListener;
 
-public final class PerPlayerKit extends JavaPlugin {
+public final class PerPlayerKit extends JavaPlugin { // Основной класс плагина PerPlayerKit
 
-    public static Plugin plugin;
-    public static StorageManager storageManager;
-    private BackupManager backupManager;
+    public static Plugin plugin; // Статическая ссылка на плагин
+    public static StorageManager storageManager; // Менеджер хранения данных
+    private BackupManager backupManager; // Менеджер резервных копий
 
-    public static Plugin getPlugin() {
+    public static Plugin getPlugin() { // Получить экземпляр плагина
         return plugin;
     }
 
     @Override
-    public void onEnable() {
-        notice();
+    public void onEnable() { // При включении плагина
+        notice(); // Вывести уведомление о лицензии
 
-        int bstatsId = 24380;
-        Metrics metrics = new Metrics(this, bstatsId);
+        int bstatsId = 24380; // ID для bStats
+        Metrics metrics = new Metrics(this, bstatsId); // Инициализация bStats
 
-        plugin = this;
-        ConfigManager configManager = new ConfigManager(this);
-        configManager.loadConfig();
+        plugin = this; // Установить статическую ссылку
+        ConfigManager configManager = new ConfigManager(this); // Создать менеджер конфигурации
+        configManager.loadConfig(); // Загрузить конфигурацию
 
-        new StyleManager(this);
+        new StyleManager(this); // Инициализировать менеджер стилей
 
-        new ItemFilter(this);
-        new BroadcastManager(this);
+        new ItemFilter(this); // Инициализировать фильтр предметов
+        new BroadcastManager(this); // Инициализировать менеджер трансляций
 
-        new KitManager(this);
-        new KitShareManager(this);
-        new KitRoomDataManager(this);
+        new KitManager(this); // Инициализировать менеджер китов
+        new KitShareManager(this); // Инициализировать менеджер обмена китами
+        new KitRoomDataManager(this); // Инициализировать менеджер данных комнаты китов
 
-        loadPublicKitsIdsFromConfig();
-        getLogger().info("Public Kit Configuration Loaded");
+        loadPublicKitsIdsFromConfig(); // Загрузить ID публичных китов из конфигурации
+        getLogger().info("Конфигурация публичных китов загружена"); // Логировать
 
-        String dbType = this.getConfig().getString("storage.type");
+        String dbType = this.getConfig().getString("storage.type"); // Получить тип хранилища из конфигурации
 
-        if (dbType == null) {
-            this.getLogger().warning("Database type not found in config, fix your config to continue!");
-            this.getServer().getPluginManager().disablePlugin(this);
-            return;
+        if (dbType == null) { // Если тип не указан
+            this.getLogger().warning("Тип базы данных не найден в конфигурации, исправьте конфигурацию для продолжения!"); // Логировать ошибку
+            this.getServer().getPluginManager().disablePlugin(this); // Отключить плагин
+            return; // Выйти
         }
 
-        storageManager = new StorageSelector(this, dbType).getDbManager();
-        this.getLogger().info("Using storage type: " + storageManager.getClass().getName());
+        storageManager = new StorageSelector(this, dbType).getDbManager(); // Выбрать и получить менеджер хранилища
+        this.getLogger().info("Используется тип хранилища: " + storageManager.getClass().getName()); // Логировать тип
 
-        if (storageManager == null) {
-            this.getLogger().warning("Database error occurred, please check your config!");
-            this.getServer().getPluginManager().disablePlugin(this);
-            return;
+        if (storageManager == null) { // Если менеджер не создан
+            this.getLogger().warning("Произошла ошибка базы данных, проверьте конфигурацию!"); // Логировать ошибку
+            this.getServer().getPluginManager().disablePlugin(this); // Отключить плагин
+            return; // Выйти
         }
 
-        attemptDatabaseConnection(true);
+        attemptDatabaseConnection(true); // Попытаться подключиться к БД
 
         try {
-            storageManager.init();
-        } catch (StorageOperationException e) {
-            this.getLogger().warning("Failed to initialize the database. Disabling plugin.");
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
+            storageManager.init(); // Инициализировать БД
+        } catch (StorageOperationException e) { // Обработка ошибки инициализации
+            this.getLogger().warning("Не удалось инициализировать базу данных. Отключение плагина."); // Логировать ошибку
+            Bukkit.getPluginManager().disablePlugin(this); // Отключить плагин
+            return; // Выйти
         }
 
-        // Initialize backup system for file-based storage methods
-        if (isFileBasedStorage(dbType)) {
-            backupManager = new BackupManager(this);
-            if (backupManager.isEnabled()) {
-                getLogger().info("Backup system initialized for file-based storage");
-            } else {
-                getLogger().info("Backup system disabled in configuration");
+        // Инициализация системы резервного копирования для файловых методов хранения
+        if (isFileBasedStorage(dbType)) { // Если тип хранилища файловый
+            backupManager = new BackupManager(this); // Создать менеджер резервных копий
+            if (backupManager.isEnabled()) { // Если резервное копирование включено
+                getLogger().info("Система резервного копирования инициализирована для файлового хранилища"); // Логировать
+            } else { // Если резервное копирование отключено
+                getLogger().info("Система резервного копирования отключена в конфигурации"); // Логировать
             }
-        } else {
-            getLogger().info("Backup system not needed for non-file-based storage: " + dbType);
+        } else { // Если тип хранилища не файловый
+            getLogger().info("Система резервного копирования не требуется для не файлового хранилища: " + dbType); // Логировать
         }
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> { // Запуск асинхронного таймера
 
-            if (storageManager.isConnected()) {
+            if (storageManager.isConnected()) { // Если подключение к БД активно
                 try {
-                    storageManager.keepAlive();
-                } catch (StorageConnectionException e) {
-                    this.getLogger().warning("Database keep alive failed: " + e.getMessage());
+                    storageManager.keepAlive(); // Поддерживать соединение
+                } catch (StorageConnectionException e) { // Обработка ошибки поддержки соединения
+                    this.getLogger().warning("Поддержка соединения с БД не удалась: " + e.getMessage()); // Логировать ошибку
                 }
-            } else {
-                this.getLogger().warning("Database connection failed. Attempting to reconnect.");
-                attemptDatabaseConnection(false);
+            } else { // Если подключение к БД неактивно
+                this.getLogger().warning("Подключение к базе данных не удалось. Попытка переподключения."); // Логировать ошибку
+                attemptDatabaseConnection(false); // Попытаться переподключиться
             }
 
-        }, 30 * 20, 30 * 20); // runs every 30 seconds
+        }, 30 * 20, 30 * 20); // запускать каждые 30 секунд (в тиках)
 
-        loadDatabaseData();
-        getLogger().info("Database data loaded");
+        loadDatabaseData(); // Загрузить данные из БД
+        getLogger().info("Данные базы данных загружены"); // Логировать
 
-        UpdateChecker updateChecker = new UpdateChecker(this);
+        UpdateChecker updateChecker = new UpdateChecker(this); // Создать проверку обновлений
 
-        // REGISTER THINGS START
-        KitSlotTabCompleter kitSlotTabCompleter = new KitSlotTabCompleter();
-        ECSlotTabCompleter ecSlotTabCompleter = new ECSlotTabCompleter();
+        // РЕГИСТРАЦИЯ НАЧАЛО
+        KitSlotTabCompleter kitSlotTabCompleter = new KitSlotTabCompleter(); // Комплитер слотов китов
+        ECSlotTabCompleter ecSlotTabCompleter = new ECSlotTabCompleter(); // Комплитер слотов эндер-сундуков
 
-        this.getCommand("kit").setExecutor(new MainMenuCommand(plugin));
+        this.getCommand("kit").setExecutor(new MainMenuCommand(plugin)); // Регистрация команды /kit
 
-        this.getCommand("sharekit").setExecutor(new ShareKitCommand());
-        this.getCommand("sharekit").setTabCompleter(kitSlotTabCompleter);
+        this.getCommand("sharekit").setExecutor(new ShareKitCommand()); // Регистрация команды /sharekit
+        this.getCommand("sharekit").setTabCompleter(kitSlotTabCompleter); // Установка комплитера
 
-        this.getCommand("shareec").setExecutor(new ShareECKitCommand());
-        this.getCommand("shareec").setTabCompleter(ecSlotTabCompleter);
+        this.getCommand("shareec").setExecutor(new ShareECKitCommand()); // Регистрация команды /shareec
+        this.getCommand("shareec").setTabCompleter(ecSlotTabCompleter); // Установка комплитера
 
-        this.getCommand("copykit").setExecutor(new CopyKitCommand());
+        this.getCommand("copykit").setExecutor(new CopyKitCommand()); // Регистрация команды /copykit
 
-        KitRoomCommand kitRoomCommand = new KitRoomCommand();
-        this.getCommand("kitroom").setExecutor(kitRoomCommand);
-        this.getCommand("kitroom").setTabCompleter(kitRoomCommand);
+        KitRoomCommand kitRoomCommand = new KitRoomCommand(); // Команда комнаты китов
+        this.getCommand("kitroom").setExecutor(kitRoomCommand); // Регистрация команды /kitroom
+        this.getCommand("kitroom").setTabCompleter(kitRoomCommand); // Установка комплитера
 
-        this.getCommand("swapkit").setExecutor(new SwapKitCommand());
-        this.getCommand("swapkit").setTabCompleter(kitSlotTabCompleter);
+        this.getCommand("swapkit").setExecutor(new SwapKitCommand()); // Регистрация команды /swapkit
+        this.getCommand("swapkit").setTabCompleter(kitSlotTabCompleter); // Установка комплитера
 
-        this.getCommand("deletekit").setExecutor(new DeleteKitCommand());
-        this.getCommand("deletekit").setTabCompleter(kitSlotTabCompleter);
+        this.getCommand("deletekit").setExecutor(new DeleteKitCommand()); // Регистрация команды /deletekit
+        this.getCommand("deletekit").setTabCompleter(kitSlotTabCompleter); // Установка комплитера
 
-        this.getCommand("inspectkit").setExecutor(new InspectKitCommand(plugin));
-        this.getCommand("inspectkit").setTabCompleter(new InspectKitCommand(plugin));
+        this.getCommand("inspectkit").setExecutor(new InspectKitCommand(plugin)); // Регистрация команды /inspectkit
+        this.getCommand("inspectkit").setTabCompleter(new InspectKitCommand(plugin)); // Установка комплитера
 
-        this.getCommand("inspectec").setExecutor(new InspectEcCommand(plugin));
-        this.getCommand("inspectec").setTabCompleter(new InspectEcCommand(plugin));
+        this.getCommand("inspectec").setExecutor(new InspectEcCommand(plugin)); // Регистрация команды /inspectec
+        this.getCommand("inspectec").setTabCompleter(new InspectEcCommand(plugin)); // Установка комплитера
 
-        this.getCommand("enderchest").setExecutor(new EnderchestCommand());
+        this.getCommand("enderchest").setExecutor(new EnderchestCommand()); // Регистрация команды /enderchest
 
-        SavePublicKitCommand savePublicKitCommand = new SavePublicKitCommand();
-        this.getCommand("savepublickit").setExecutor(savePublicKitCommand);
-        this.getCommand("savepublickit").setTabCompleter(savePublicKitCommand);
+        SavePublicKitCommand savePublicKitCommand = new SavePublicKitCommand(); // Команда сохранения публичного кита
+        this.getCommand("savepublickit").setExecutor(savePublicKitCommand); // Регистрация команды /savepublickit
+        this.getCommand("savepublickit").setTabCompleter(savePublicKitCommand); // Установка комплитера
 
-        PublicKitCommand publicKitCommand = new PublicKitCommand(plugin);
-        this.getCommand("publickit").setExecutor(publicKitCommand);
-        this.getCommand("publickit").setTabCompleter(publicKitCommand);
+        PublicKitCommand publicKitCommand = new PublicKitCommand(plugin); // Команда публичного кита
+        this.getCommand("publickit").setExecutor(publicKitCommand); // Регистрация команды /publickit
+        this.getCommand("publickit").setTabCompleter(publicKitCommand); // Установка комплитера
 
-        for (int i = 1; i <= 9; i++) {
-            this.getCommand("k" + i).setExecutor(new ShortKitCommand());
+        for (int i = 1; i <= 9; i++) { // Цикл для команд /k1 - /k9
+            this.getCommand("k" + i).setExecutor(new ShortKitCommand()); // Регистрация короткой команды кита
         }
 
-        for (int i = 1; i <= 9; i++) {
-            this.getCommand("ec" + i).setExecutor(new ShortECCommand());
+        for (int i = 1; i <= 9; i++) { // Цикл для команд /ec1 - /ec9
+            this.getCommand("ec" + i).setExecutor(new ShortECCommand()); // Регистрация короткой команды эндер-сундука
         }
 
-        RegearCommand regearCommand = new RegearCommand(this);
-        this.getCommand("regear").setExecutor(regearCommand);
+        RegearCommand regearCommand = new RegearCommand(this); // Команда пополнения
+        this.getCommand("regear").setExecutor(regearCommand); // Регистрация команды /regear
 
-        this.getCommand("heal").setExecutor(new HealCommand());
-        this.getCommand("repair").setExecutor(new RepairCommand());
-        this.getCommand("perplayerkit").setExecutor(new PerPlayerKitCommand(this));
+        this.getCommand("heal").setExecutor(new HealCommand()); // Регистрация команды /heal
+        this.getCommand("repair").setExecutor(new RepairCommand()); // Регистрация команды /repair
+        this.getCommand("perplayerkit").setExecutor(new PerPlayerKitCommand(this)); // Регистрация команды /perplayerkit
 
-        Bukkit.getPluginManager().registerEvents(regearCommand, this);
-        Bukkit.getPluginManager().registerEvents(new JoinListener(this, updateChecker), this);
-        Bukkit.getPluginManager().registerEvents(new QuitListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new MenuFunctionListener(), this);
-        Bukkit.getPluginManager().registerEvents(new KitMenuCloseListener(), this);
-        Bukkit.getPluginManager().registerEvents(new KitRoomSaveListener(), this);
-        Bukkit.getPluginManager().registerEvents(new AutoRekitListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new AboutCommandListener(), this);
+        Bukkit.getPluginManager().registerEvents(regearCommand, this); // Регистрация слушателя пополнения
+        Bukkit.getPluginManager().registerEvents(new JoinListener(this, updateChecker), this); // Регистрация слушателя входа
+        Bukkit.getPluginManager().registerEvents(new QuitListener(this), this); // Регистрация слушателя выхода
+        Bukkit.getPluginManager().registerEvents(new MenuFunctionListener(), this); // Регистрация слушателя меню
+        Bukkit.getPluginManager().registerEvents(new KitMenuCloseListener(), this); // Регистрация слушателя закрытия меню китов
+        Bukkit.getPluginManager().registerEvents(new KitRoomSaveListener(), this); // Регистрация слушателя сохранения комнаты китов
+        Bukkit.getPluginManager().registerEvents(new AutoRekitListener(this), this); // Регистрация слушателя автосмены кита
+        Bukkit.getPluginManager().registerEvents(new AboutCommandListener(), this); // Регистрация слушателя команды "о плагине"
 
-        // features
-        if (getConfig().getBoolean("feature.old-death-drops", false)) {
-            Bukkit.getPluginManager().registerEvents(new OldDeathDropListener(), this);
+        // функции
+        if (getConfig().getBoolean("feature.old-death-drops", false)) { // Если включена старая система выпадения вещей при смерти
+            Bukkit.getPluginManager().registerEvents(new OldDeathDropListener(), this); // Регистрация слушателя
         }
 
-        if (getConfig().getBoolean("anti-exploit.block-spaces-in-commands", false)) {
-            Bukkit.getPluginManager().registerEvents(new CommandListener(), this);
+        if (getConfig().getBoolean("anti-exploit.block-spaces-in-commands", false)) { // Если включена блокировка пробелов в командах
+            Bukkit.getPluginManager().registerEvents(new CommandListener(), this); // Регистрация слушателя
         }
 
-        if (getConfig().getBoolean("anti-exploit.prevent-shulkers-dropping-items", false)) {
-            Bukkit.getPluginManager().registerEvents(new ShulkerDropItemsListener(), this);
+        if (getConfig().getBoolean("anti-exploit.prevent-shulkers-dropping-items", false)) { // Если включена защита от выпадения предметов из шалкеров
+            Bukkit.getPluginManager().registerEvents(new ShulkerDropItemsListener(), this); // Регистрация слушателя
         }
 
-        // REGISTER THINGS END
+        // РЕГИСТРАЦИЯ КОНЕЦ
 
-        BroadcastManager.get().startScheduledBroadcast();
-        updateChecker.printStartupStatus();
+        BroadcastManager.get().startScheduledBroadcast(); // Запуск регулярных трансляций
+        updateChecker.printStartupStatus(); // Вывод статуса обновления при запуске
 
     }
 
     @Override
-    public void onDisable() {
-        closeDatabaseConnection();
+    public void onDisable() { // При отключении плагина
+        closeDatabaseConnection(); // Закрыть соединение с БД
 
-        // Shutdown backup manager if it exists
-        if (backupManager != null) {
-            backupManager.shutdown();
+        // Завершение работы менеджера резервных копий, если он существует
+        if (backupManager != null) { // Если менеджер инициализирован
+            backupManager.shutdown(); // Завершить его работу
         }
     }
 
     /**
-     * Check if the storage type is file-based (requires backups)
-     * 
-     * @param storageType The storage type from configuration
-     * @return true if file-based storage, false otherwise
+     * Проверить, является ли тип хранилища файловым (требует резервные копии)
+     *
+     * @param storageType Тип хранилища из конфигурации
+     * @return true, если файловое хранилище, false в противном случае
      */
-    private boolean isFileBasedStorage(String storageType) {
-        return storageType.equalsIgnoreCase("sqlite") ||
-                storageType.equalsIgnoreCase("yml") ||
-                storageType.equalsIgnoreCase("yaml");
+    private boolean isFileBasedStorage(String storageType) { // Проверка файлового хранилища
+        return storageType.equalsIgnoreCase("sqlite") || // SQLite
+                storageType.equalsIgnoreCase("yml") || // YAML
+                storageType.equalsIgnoreCase("yaml"); // YAML
     }
 
-    private void loadPublicKitsIdsFromConfig() {
-        // generate list of public kits from the config
-        ConfigurationSection publicKitsSection = getConfig().getConfigurationSection("publickits");
+    private void loadPublicKitsIdsFromConfig() { // Загрузка ID публичных китов из конфигурации
+        // генерация списка публичных китов из конфигурации
+        ConfigurationSection publicKitsSection = getConfig().getConfigurationSection("publickits"); // Получить секцию publickits
 
-        if (publicKitsSection == null) {
-            this.getLogger().warning("No public kits found in config!");
-        } else {
+        if (publicKitsSection == null) { // Если секция отсутствует
+            this.getLogger().warning("В конфигурации не найдено публичных китов!"); // Логировать предупреждение
+        } else { // Если секция существует
 
-            publicKitsSection.getKeys(false).forEach(key -> {
-                String name = getConfig().getString("publickits." + key + ".name");
-                Material icon = Material.valueOf(getConfig().getString("publickits." + key + ".icon"));
-                PublicKit kit = new PublicKit(key, name, icon);
-                KitManager.get().getPublicKitList().add(kit);
+            publicKitsSection.getKeys(false).forEach(key -> { // Цикл по ключам (ID китов)
+                String name = getConfig().getString("publickits." + key + ".name"); // Получить имя
+                Material icon = Material.valueOf(getConfig().getString("publickits." + key + ".icon")); // Получить иконку
+                PublicKit kit = new PublicKit(key, name, icon); // Создать объект PublicKit
+                KitManager.get().getPublicKitList().add(kit); // Добавить в список публичных китов
             });
         }
     }
 
-    private void loadDatabaseData() {
-        KitRoomDataManager.get().loadFromDB();
-        KitManager.get().getPublicKitList().forEach(kit -> KitManager.get().loadPublicKitFromDB(kit.id));
-        Bukkit.getOnlinePlayers().forEach(player -> KitManager.get().loadPlayerDataFromDB(player.getUniqueId()));
+    private void loadDatabaseData() { // Загрузка данных из БД
+        KitRoomDataManager.get().loadFromDB(); // Загрузить данные комнаты китов
+        KitManager.get().getPublicKitList().forEach(kit -> KitManager.get().loadPublicKitFromDB(kit.id)); // Загрузить каждый публичный кит
+        Bukkit.getOnlinePlayers().forEach(player -> KitManager.get().loadPlayerDataFromDB(player.getUniqueId())); // Загрузить данные для каждого онлайн-игрока
 
     }
 
-    private void attemptDatabaseConnection(boolean disableOnFail) {
+    private void attemptDatabaseConnection(boolean disableOnFail) { // Попытка подключения к БД
         try {
-            storageManager.connect();
-            if (!storageManager.isConnected()) {
-                throw new StorageConnectionException("Expected to be connected to the database, but failed.");
+            storageManager.connect(); // Подключиться
+            if (!storageManager.isConnected()) { // Если подключение не установлено
+                throw new StorageConnectionException("Ожидалось подключение к базе данных, но оно не удалось."); // Выбросить исключение
             }
-        } catch (StorageConnectionException e) {
-            if (disableOnFail) {
-                this.getLogger().warning("Database connection failed: " + e.getMessage());
-                this.getLogger().warning("Disabling plugin.");
-                Bukkit.getPluginManager().disablePlugin(this);
-            } else {
-                this.getLogger().warning("Database connection failed: " + e.getMessage());
+        } catch (StorageConnectionException e) { // Обработка ошибки подключения
+            if (disableOnFail) { // Если нужно отключить плагин при ошибке
+                this.getLogger().warning("Подключение к базе данных не удалось: " + e.getMessage()); // Логировать ошибку
+                this.getLogger().warning("Отключение плагина."); // Логировать отключение
+                Bukkit.getPluginManager().disablePlugin(this); // Отключить плагин
+            } else { // Если не нужно отключать плагин
+                this.getLogger().warning("Подключение к базе данных не удалось: " + e.getMessage()); // Логировать ошибку
             }
         }
     }
 
-    private void closeDatabaseConnection() {
+    private void closeDatabaseConnection() { // Закрытие соединения с БД
         try {
-            storageManager.close();
-        } catch (StorageConnectionException e) {
-            // retry once
+            storageManager.close(); // Закрыть соединение
+        } catch (StorageConnectionException e) { // Обработка ошибки закрытия
+            // повторить попытку один раз
             try {
-                storageManager.close();
-            } catch (StorageConnectionException ex) {
-                this.getLogger().warning("Failed to close the database connection: " + e.getMessage());
+                storageManager.close(); // Повторное закрытие
+            } catch (StorageConnectionException ex) { // Обработка ошибки при повторной попытке
+                this.getLogger().warning("Не удалось закрыть соединение с базой данных: " + e.getMessage()); // Логировать ошибку
             }
         }
     }
 
-    private void notice() {
+    private void notice() { // Вывод уведомления о лицензии
         String notice = """
-                * PerPlayerKit is free software: you can redistribute it and/or modify it under
-                * the terms of the GNU Affero General Public License as published by the
-                * Free Software Foundation, either version 3 of the License, or (at your
-                * option) any later version.
+                * PerPlayerKit - свободное программное обеспечение: вы можете распространять и/или изменять его
+                * в соответствии с условиями лицензии GNU Affero General Public License, опубликованной
+                * Free Software Foundation, либо версии 3 Лицензии, либо (по вашему
+                * выбору) любой более поздней версии.
                 *
-                * PerPlayerKit is distributed in the hope that it will be useful, but WITHOUT ANY
-                * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-                * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for
-                * more details.
+                * PerPlayerKit распространяется в надежде, что он будет полезен, но БЕЗ КАКОЙ-ЛИБО
+                * ГАРАНТИИ; даже без подразумеваемой гарантии ТОВАРНОГО ВИДА или ПРИГОДНОСТИ
+                * ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ. Подробнее см. в лицензии GNU Affero General Public License.
                 *
-                * You should have received a copy of the GNU Affero General Public License
-                * along with PerPlayerKit. If not, see <https://www.gnu.org/licenses/>.""";
+                * Вы должны были получить копию лицензии GNU Affero General Public License
+                * вместе с PerPlayerKit. Если нет, см. <https://www.gnu.org/licenses/>.
+                """; // Основное уведомление о лицензии
 
         String otherInfo = """
-                * All users must be provided with the source code of the software, as per the AGPL-3.0 license.
-                * If you are using a modified version of PerPlayerKit, you must make the source code of your
-                * modified version available to all users, as per the AGPL-3.0 license.
-                * Consider modifying the /aboutperplayerkit command to include a link to your modified source code.
-                """;
+                * Все пользователи должны получить исходный код программного обеспечения, в соответствии с лицензией AGPL-3.0.
+                * Если вы используете изменённую версию PerPlayerKit, вы должны сделать исходный код вашей
+                * изменённой версии доступным для всех пользователей, в соответствии с лицензией AGPL-3.0.
+                * Рассмотрите возможность изменения команды /aboutperplayerkit, чтобы включить в неё ссылку на ваш изменённый исходный код.
+                """; // Дополнительная информация о лицензии
 
-        getLogger().info(notice);
-        getLogger().info(otherInfo);
+        getLogger().info(notice); // Логировать основное уведомление
+        getLogger().info(otherInfo); // Логировать дополнительную информацию
     }
 }

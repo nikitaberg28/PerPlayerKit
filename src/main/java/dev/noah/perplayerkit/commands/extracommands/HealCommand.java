@@ -1,20 +1,19 @@
 /*
  * Copyright 2022-2025 Noah Ross
  *
- * This file is part of PerPlayerKit.
+ * Этот файл является частью PerPlayerKit.
  *
- * PerPlayerKit is free software: you can redistribute it and/or modify it under
- * the terms of the GNU Affero General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * PerPlayerKit — свободное программное обеспечение: вы можете распространять
+ * и/или изменять его в соответствии с условиями GNU Affero General Public License,
+ * опубликованной Free Software Foundation, либо версии 3 Лицензии, либо (по вашему
+ * выбору) любой более поздней версии.
  *
- * PerPlayerKit is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for
- * more details.
+ * PerPlayerKit распространяется в надежде, что он будет полезен, но БЕЗ КАКОЙ-ЛИБО
+ * ГАРАНТИИ; даже без подразумеваемой гарантии ТОВАРНОГО ВИДА или ПРИГОДНОСТИ ДЛЯ
+ * ОПРЕДЕЛЕННОЙ ЦЕЛИ. Для получения дополнительных сведений см. GNU Affero General Public License.
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with PerPlayerKit. If not, see <https://www.gnu.org/licenses/>.
+ * Вы должны были получить копию GNU Affero General Public License вместе с PerPlayerKit.
+ * Если это не так, см. <https://www.gnu.org/licenses/>.
  */
 package dev.noah.perplayerkit.commands.extracommands;
 
@@ -32,14 +31,21 @@ public class HealCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
+        // Проверяем, является ли отправитель команды игроком
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("Only players can use this command!");
+            sender.sendMessage("Только игроки могут использовать эту команду!");
             return true;
         }
 
+        // Отправляем сообщение о том, что игрок вылечил себя
         BroadcastManager.get().broadcastPlayerHealed(player);
+
+        // Выполняем лечение игрока
         PlayerUtil.healPlayer(player);
+
+        // Проигрываем звук успешного действия
         SoundManager.playSuccess(player);
+
         return true;
     }
 }

@@ -1,57 +1,51 @@
 /*
  * Copyright 2022-2025 Noah Ross
  *
- * Этот файл является частью PerPlayerKit.
+ * This file is part of PerPlayerKit.
  *
- * PerPlayerKit — свободное программное обеспечение: вы можете распространять
- * и/или изменять его в соответствии с условиями GNU Affero General Public License,
- * опубликованной Free Software Foundation, либо версии 3 Лицензии, либо (по вашему
- * выбору) любой более поздней версии.
+ * PerPlayerKit is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * PerPlayerKit распространяется в надежде, что он будет полезен, но БЕЗ КАКОЙ-ЛИБО
- * ГАРАНТИИ; даже без подразумеваемой гарантии ТОВАРНОГО ВИДА или ПРИГОДНОСТИ ДЛЯ
- * ОПРЕДЕЛЕННОЙ ЦЕЛИ. Для получения дополнительных сведений см. GNU Affero General Public License.
+ * PerPlayerKit is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for
+ * more details.
  *
- * Вы должны были получить копию GNU Affero General Public License вместе с PerPlayerKit.
- * Если это не так, см. <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with PerPlayerKit. If not, see <https://www.gnu.org/licenses/>.
  */
 package dev.noah.perplayerkit.commands;
 
-import dev.noah.perplayerkit.util.DisabledCommand; // Утилита для проверки, разрешена ли команда в мире
-import dev.noah.perplayerkit.KitShareManager;      // Менеджер для работы с обменом и копированием китов
-import org.bukkit.ChatColor;                        // Для цветного текста в сообщениях
+import dev.noah.perplayerkit.util.DisabledCommand;
+import dev.noah.perplayerkit.KitShareManager;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import dev.noah.perplayerkit.util.SoundManager;    // Утилита для воспроизведения звуков
+import dev.noah.perplayerkit.util.SoundManager;
 import org.jetbrains.annotations.NotNull;
 
-// Команда для копирования кита по коду
 public class CopyKitCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
-        // Проверяем, является ли отправитель команды игроком
         if (sender instanceof Player player) {
 
-            // Проверяем, заблокирована ли команда в мире, где находится игрок
             if (DisabledCommand.isBlockedInWorld(player)) {
-                return true; // Если команда заблокирована, просто завершаем обработку
+                return true;
             }
 
-            // Проверяем, были ли переданы аргументы команды (ожидаем код кита)
+
             if (args.length > 0) {
-                // Используем менеджер для копирования кита по указанному коду
                 KitShareManager.get().copyKit(player, args[0]);
             } else {
-                // Если аргумент не передан, отправляем игроку сообщение об ошибке
                 player.sendMessage(ChatColor.RED + "Ошибка, вы должны ввести код кита для копирования");
-                // Проигрываем звук неудачи
                 SoundManager.playFailure(player);
             }
         } else {
-            // Если команда была выполнена не игроком (например, консолью), отправляем сообщение
             sender.sendMessage("Только игроки могут использовать эту команду");
         }
 

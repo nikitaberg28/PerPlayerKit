@@ -1,68 +1,58 @@
 /*
  * Copyright 2022-2025 Noah Ross
  *
- * Этот файл является частью PerPlayerKit.
+ * This file is part of PerPlayerKit.
  *
- * PerPlayerKit — свободное программное обеспечение: вы можете распространять
- * и/или изменять его в соответствии с условиями GNU Affero General Public License,
- * опубликованной Free Software Foundation, либо версии 3 Лицензии, либо (по вашему
- * выбору) любой более поздней версии.
+ * PerPlayerKit is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * PerPlayerKit распространяется в надежде, что он будет полезен, но БЕЗ КАКОЙ-ЛИБО
- * ГАРАНТИИ; даже без подразумеваемой гарантии ТОВАРНОГО ВИДА или ПРИГОДНОСТИ ДЛЯ
- * ОПРЕДЕЛЕННОЙ ЦЕЛИ. Для получения дополнительных сведений см. GNU Affero General Public License.
+ * PerPlayerKit is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for
+ * more details.
  *
- * Вы должны были получить копию GNU Affero General Public License вместе с PerPlayerKit.
- * Если это не так, см. <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with PerPlayerKit. If not, see <https://www.gnu.org/licenses/>.
  */
 package dev.noah.perplayerkit.commands;
 
-import dev.noah.perplayerkit.util.DisabledCommand; // Утилита для проверки, разрешена ли команда в мире
-import dev.noah.perplayerkit.KitManager;           // Менеджер китов и эндер-сундуков
+import dev.noah.perplayerkit.util.DisabledCommand;
+import dev.noah.perplayerkit.KitManager;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;          // Интерфейс для обработки команд
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.UUID; // Универсальный идентификатор игрока
+import java.util.UUID;
 
-// Команда для быстрой загрузки кита по номеру, введённому в виде алиаса команды (например, /k3 или /kit5)
 public class ShortKitCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
-        // Проверяем, является ли отправитель команды игроком
         if (!(sender instanceof Player player)) {
             sender.sendMessage("Только игроки могут использовать эту команду.");
             return true;
         }
 
-        // Проверяем, заблокирована ли команда в мире, где находится игрок
         if (DisabledCommand.isBlockedInWorld(player)) {
-            return true; // Если команда заблокирована, просто завершаем обработку
+            return true;
         }
 
-        UUID uuid = player.getUniqueId(); // Получаем уникальный идентификатор игрока
+        UUID uuid = player.getUniqueId();
 
-        // Проверяем, соответствует ли метка команды шаблону k[1-9] (например, k1, k2, ..., k9)
+        // Проверка, соответствует ли лейбл "kX" или "kitX", где X - число от 1 до 9
         if (label.matches("k[1-9]")) {
-            // Извлекаем номер кита из метки команды (например, из "k3" получаем "3")
-            int kitNumber = Integer.parseInt(label.substring(1));
-            // Загружаем кит с указанным номером для игрока
+            int kitNumber = Integer.parseInt(label.substring(1)); // Извлечение номера для "kX"
             KitManager.get().loadKit(player, kitNumber);
-        }
-        // Проверяем, соответствует ли метка команды шаблону kit[1-9] (например, kit1, ..., kit9)
-        else if (label.matches("kit[1-9]")) {
-            // Извлекаем номер кита из метки команды (например, из "kit5" получаем "5")
-            int kitNumber = Integer.parseInt(label.substring(3));
-            // Загружаем кит с указанным номером для игрока
+        } else if (label.matches("kit[1-9]")) {
+            int kitNumber = Integer.parseInt(label.substring(3)); // Извлечение номера для "kitX"
             KitManager.get().loadKit(player, kitNumber);
-        }
-        // Если метка команды не соответствует ни одному из допустимых шаблонов
-        else {
-            player.sendMessage("Неверная метка команды.");
+        } else {
+            player.sendMessage("Неверный лейбл команды.");
         }
 
         return true;

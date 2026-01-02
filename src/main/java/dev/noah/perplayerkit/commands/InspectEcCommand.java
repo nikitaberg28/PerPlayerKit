@@ -1,49 +1,49 @@
 /*
  * Copyright 2022-2025 Noah Ross
  *
- * Этот файл является частью PerPlayerKit.
+ * This file is part of PerPlayerKit.
  *
- * PerPlayerKit — свободное программное обеспечение: вы можете распространять
- * и/или изменять его в соответствии с условиями GNU Affero General Public License,
- * опубликованной Free Software Foundation, либо версии 3 Лицензии, либо (по вашему
- * выбору) любой более поздней версии.
+ * PerPlayerKit is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * PerPlayerKit распространяется в надежде, что он будет полезен, но БЕЗ КАКОЙ-ЛИБО
- * ГАРАНТИИ; даже без подразумеваемой гарантии ТОВАРНОГО ВИДА или ПРИГОДНОСТИ ДЛЯ
- * ОПРЕДЕЛЕННОЙ ЦЕЛИ. Для получения дополнительных сведений см. GNU Affero General Public License.
+ * PerPlayerKit is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for
+ * more details.
  *
- * Вы должны были получить копию GNU Affero General Public License вместе с PerPlayerKit.
- * Если это не так, см. <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with PerPlayerKit. If not, see <https://www.gnu.org/licenses/>.
  */
 package dev.noah.perplayerkit.commands;
 
-import dev.noah.perplayerkit.KitManager;        // Менеджер китов и эндер-сундуков
-import dev.noah.perplayerkit.gui.GUI;           // Класс для работы с графическим интерфейсом
-import dev.noah.perplayerkit.util.BroadcastManager; // Утилита для отправки сообщений
-import dev.noah.perplayerkit.util.SoundManager;     // Утилита для воспроизведения звуков
+import dev.noah.perplayerkit.KitManager;
+import dev.noah.perplayerkit.gui.GUI;
+import dev.noah.perplayerkit.util.BroadcastManager;
+import dev.noah.perplayerkit.util.SoundManager;
 
-import org.bukkit.Bukkit;                        // Основной класс API Bukkit
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;       // Интерфейс для обработки команд
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;          // Интерфейс для автодополнения команд
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;                 // Представление плагина
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;  // Для асинхронного выполнения
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static dev.noah.perplayerkit.commands.InspectCommandUtil.*; // Импорт статических полей и методов из утилиты
+import static dev.noah.perplayerkit.commands.InspectCommandUtil.*;
 
-// Команда для просмотра чужого эндер-сундука (только для модераторов)
 public class InspectEcCommand implements CommandExecutor, TabCompleter {
-    private final Plugin plugin; // Ссылка на экземпляр плагина
+    private final Plugin plugin;
 
     public InspectEcCommand(Plugin plugin) {
         this.plugin = plugin;
@@ -52,40 +52,33 @@ public class InspectEcCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
                              @NotNull String label, @NotNull String[] args) {
-        // Проверяем, является ли отправитель команды игроком
         if (!(sender instanceof Player player)) {
-            // Если нет, отправляем сообщение об ошибке
             sender.sendMessage(ERROR_PREFIX.append(
-                    mm.deserialize("<red>Эту команду могут выполнить только игроки.</red>")).toString());
+                    mm.deserialize("<red>Эту команду могут выполнять только игроки.</red>")).toString());
             return true;
         }
 
-        // Проверяем, есть ли у игрока разрешение на использование команды
         if (!player.hasPermission("perplayerkit.inspect")) {
             BroadcastManager.get().sendComponentMessage(player,
                     ERROR_PREFIX.append(
-                            mm.deserialize("<red>У вас нет разрешения на использование этой команды.</red>")));
+                            mm.deserialize("<red>У вас нет прав на использование этой команды.</red>")));
             SoundManager.playFailure(player);
             return true;
         }
 
-        // Проверяем, передано ли нужное количество аргументов (имя/uuid игрока и слот)
         if (args.length < 2) {
-            // Если нет, показываем правильное использование команды
-            showUsage(player, "inspectec"); // "inspectec" - название команды просмотра эндер-сундука
+            showUsage(player, "inspectec");
             return true;
         }
 
-        // Парсим номер слота
+        // Парсинг номера слота
         int slot;
         try {
-            slot = Integer.parseInt(args[1]); // args[1] - это номер слота
-            // Проверяем, входит ли слот в допустимый диапазон (MIN_SLOT - MAX_SLOT, обычно 1-9)
+            slot = Integer.parseInt(args[1]);
             if (slot < MIN_SLOT || slot > MAX_SLOT) {
-                throw new NumberFormatException(); // Выбрасываем исключение, если слот вне диапазона
+                throw new NumberFormatException();
             }
         } catch (NumberFormatException e) {
-            // Если аргумент не является числом или вне диапазона
             BroadcastManager.get().sendComponentMessage(player,
                     ERROR_PREFIX.append(
                             mm.deserialize("<red>Слот должен быть числом от " +
@@ -94,61 +87,56 @@ public class InspectEcCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        // Асинхронно разрешаем идентификатор игрока (имя -> UUID)
-        CompletableFuture<Void> future = resolvePlayerIdentifierAsync(args[0]) // args[0] - имя или UUID игрока
-                .thenCompose(targetUuid -> { // thenCompose используется для цепочки асинхронных операций
+        // Асинхронное получение идентификатора игрока
+        CompletableFuture<Void> future = resolvePlayerIdentifierAsync(args[0])
+                .thenCompose(targetUuid -> {
                     if (targetUuid == null) {
-                        // Если игрок не найден
-                        // Планируем отправку сообщения об ошибке в основном потоке Bukkit
+                        // Игрок не найден - планируем сообщение об ошибке в основном потоке
                         Bukkit.getScheduler().runTask(plugin, () -> {
                             BroadcastManager.get().sendComponentMessage(player,
                                     ERROR_PREFIX.append(
                                             mm.deserialize("<red>Не удалось найти игрока с таким именем или UUID.</red>")));
                             SoundManager.playFailure(player);
                         });
-                        return CompletableFuture.completedFuture(null); // Завершаем цепочку
+                        return CompletableFuture.completedFuture(null);
                     }
 
-                    // Проверяем, онлайн ли целевой игрок
+                    // Сначала проверяем, онлайн ли игрок
                     Player targetPlayer = Bukkit.getPlayer(targetUuid);
 
-                    // Асинхронно загружаем данные игрока из базы данных, если он оффлайн
+                    // Асинхронная загрузка данных игрока
                     return CompletableFuture.runAsync(() -> {
                         if (targetPlayer == null) {
-                            // Загружаем данные только если игрок оффлайн
+                            // Загружаем из БД только если игрок оффлайн
                             KitManager.get().loadPlayerDataFromDB(targetUuid);
                         }
-                    }).thenRun(() -> { // После загрузки данных
-                        // Планируем выполнение в основном потоке Bukkit
+                    }).thenRun(() -> {
+                        // Запуск в основном потоке после загрузки данных
                         Bukkit.getScheduler().runTask(plugin, () -> {
-                            // Проверяем, есть ли у целевого игрока эндер-сундук в указанном слоте
                             if (KitManager.get().hasEC(targetUuid, slot)) {
-                                // Если есть, открываем GUI для просмотра
                                 GUI gui = new GUI(plugin);
-                                gui.InspectEc(player, targetUuid, slot); // Метод открытия GUI просмотра
+                                gui.InspectEc(player, targetUuid, slot);
                             } else {
-                                // Если нет, отправляем сообщение об ошибке
-                                String targetName = getPlayerName(targetUuid); // Получаем имя целевого игрока
+                                String targetName = getPlayerName(targetUuid);
 
                                 BroadcastManager.get().sendComponentMessage(player,
                                         ERROR_PREFIX.append(
-                                                mm.deserialize("<red>" + targetName +
-                                                        " не имеет эндер-сундука в слоте " + slot + "</red>")));
+                                                mm.deserialize("<red>У игрока " + targetName +
+                                                        " нет эндер-сундука в слоте " + slot + "</red>")));
                                 SoundManager.playFailure(player);
                             }
                         });
                     });
                 });
 
-        // Обработка исключений, которые могли возникнуть в цепочке асинхронных операций
+        // Обработка исключений
         future.exceptionally(ex -> {
-            // Планируем отправку сообщения об ошибке в основном потоке Bukkit
             Bukkit.getScheduler().runTask(plugin, () -> {
                 plugin.getLogger().severe("Ошибка при загрузке данных эндер-сундука: " + ex.getMessage());
                 BroadcastManager.get().sendComponentMessage(player,
                         ERROR_PREFIX.append(
                                 mm.deserialize("<red>Произошла ошибка при загрузке данных эндер-сундука. " +
-                                        "См. консоль для подробностей.</red>")));
+                                        "Подробности в консоли.</red>")));
                 SoundManager.playFailure(player);
             });
             return null;
@@ -157,41 +145,36 @@ public class InspectEcCommand implements CommandExecutor, TabCompleter {
         return true;
     }
 
-    // Метод для автодополнения команды (TabCompleter)
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender,
                                                 @NotNull Command command,
                                                 @NotNull String label,
                                                 @NotNull String[] args) {
-        // Проверяем, является ли отправитель игроком и имеет ли он разрешение
         if (!(sender instanceof Player) || !sender.hasPermission("perplayerkit.inspect")) {
-            return List.of(); // Возвращаем пустой список, если нет прав
+            return List.of();
         }
 
         if (args.length == 1) {
-            // Автодополнение для первого аргумента (имя или UUID игрока)
             String input = args[0].toLowerCase();
             List<String> completions = new ArrayList<>(Bukkit.getOnlinePlayers().stream()
-                    .map(Player::getName) // Получаем имена онлайн-игроков
-                    .filter(name -> name.toLowerCase().startsWith(input)) // Фильтруем по введённому тексту
+                    .map(Player::getName)
+                    .filter(name -> name.toLowerCase().startsWith(input))
                     .toList());
-            // Если введено достаточно символов и есть дефис, предполагаем UUID
             if (input.length() >= 4 && input.contains("-")) {
                 completions.addAll(Bukkit.getOnlinePlayers().stream()
-                        .map(Player::getUniqueId) // Получаем UUID онлайн-игроков
+                        .map(Player::getUniqueId)
                         .map(UUID::toString)
-                        .filter(uuid -> uuid.startsWith(input)) // Фильтруем по введённому тексту
+                        .filter(uuid -> uuid.startsWith(input))
                         .toList());
             }
             return completions;
         } else if (args.length == 2) {
-            // Автодополнение для второго аргумента (номер слота)
-            return IntStream.rangeClosed(MIN_SLOT, MAX_SLOT) // Создаём поток чисел от MIN_SLOT до MAX_SLOT
-                    .mapToObj(String::valueOf) // Преобразуем числа в строки
-                    .filter(slot -> slot.startsWith(args[1])) // Фильтруем по введённому тексту
-                    .collect(Collectors.toList()); // Собираем в список
+            return IntStream.rangeClosed(MIN_SLOT, MAX_SLOT)
+                    .mapToObj(String::valueOf)
+                    .filter(slot -> slot.startsWith(args[1]))
+                    .collect(Collectors.toList());
         }
 
-        return new ArrayList<>(); // Возвращаем пустой список в других случаях
+        return new ArrayList<>();
     }
 }

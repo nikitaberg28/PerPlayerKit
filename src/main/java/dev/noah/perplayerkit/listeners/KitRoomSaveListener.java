@@ -1,19 +1,20 @@
 /*
  * Copyright 2022-2025 Noah Ross
  *
- * Этот файл является частью PerPlayerKit.
+ * This file is part of PerPlayerKit.
  *
- * PerPlayerKit - свободное программное обеспечение: вы можете распространять и/или изменять его
- * в соответствии с условиями лицензии GNU Affero General Public License, опубликованной
- * Free Software Foundation, либо версии 3 Лицензии, либо (по вашему
- * выбору) любой более поздней версии.
+ * PerPlayerKit is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * PerPlayerKit распространяется в надежде, что он будет полезен, но БЕЗ КАКОЙ-ЛИБО
- * ГАРАНТИИ; даже без подразумеваемой гарантии ТОВАРНОГО ВИДА или ПРИГОДНОСТИ
- * ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ. Подробнее см. в лицензии GNU Affero General Public License.
+ * PerPlayerKit is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for
+ * more details.
  *
- * Вы должны были получить копию лицензии GNU Affero General Public License
- * вместе с PerPlayerKit. Если нет, см. <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with PerPlayerKit. If not, see <https://www.gnu.org/licenses/>.
  */
 package dev.noah.perplayerkit.listeners;
 
@@ -29,38 +30,39 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
-public class KitRoomSaveListener implements Listener { // Слушатель сохранения комнаты китов
+public class KitRoomSaveListener implements Listener {
 
     @EventHandler
-    public void onSaveButtonClick(InventoryClickEvent e) { // При нажатии на кнопку сохранения
-        if (e.getClick().isShiftClick() && e.getClick().isRightClick()) { // Проверка: Shift + Правый клик
+    public void onSaveButtonClick(InventoryClickEvent e) {
+        if (e.getClick().isShiftClick() && e.getClick().isRightClick()) {
             Inventory inv = e.getInventory();
-            if (inv.getSize() == 54) { // Проверка размера инвентаря
-                if (inv.getLocation() == null) { // Проверка, что инвентарь не в мире
+            if (inv.getSize() == 54) {
+                if (inv.getLocation() == null) {
                     InventoryView view = e.getView();
-                    Player p = (Player) e.getWhoClicked(); // Игрок, кликнувший по инвентарю
+                    Player p = (Player) e.getWhoClicked();
 
-                    if (view.getTitle().contains(StyleManager.get().getPrimaryColor() + p.getName() + "'s Kits")) { // Проверка заголовка меню (должно быть меню китов игрока)
-                        ItemStack saveButton = e.getInventory().getItem(53); // Предмет в слоте 53 (кнопка сохранения)
-                        if (saveButton != null && saveButton.getType() == Material.BARRIER) { // Проверка, что это предмет-барьер (кнопка сохранения)
-                            if (e.getSlot() == 53) { // Проверка, что клик был по слоту 53
-                                if (p.hasPermission("perplayerkit.editkitroom") || p.isOp()) { // Проверка прав администратора
+                    // Соответствует заголовку "Киты игрока " + p.getName() из GUI.java
+                    if (view.getTitle().contains(StyleManager.get().getPrimaryColor() + "Киты игрока " + p.getName())) {
+                        ItemStack saveButton = e.getInventory().getItem(53);
+                        if (saveButton != null && saveButton.getType() == Material.BARRIER) {
+                            if (e.getSlot() == 53) {
+                                if (p.hasPermission("perplayerkit.editkitroom") || p.isOp()) {
 
-                                    // Безопасное получение номера страницы из количества предметов в кнопке
+                                    // Безопасное получение номера страницы
                                     int page = (saveButton.getAmount() > 0) ? saveButton.getAmount() - 1 : 0;
 
                                     // Инициализация массива комнаты китов
-                                    ItemStack[] kitroom = new ItemStack[45]; // Массив для 45 предметов
+                                    ItemStack[] kitroom = new ItemStack[45];
 
-                                    for (int i = 0; i < 45; i++) { // Цикл по первым 45 слотам
-                                        ItemStack item = e.getInventory().getItem(i); // Получить предмет из слота i
-                                        kitroom[i] = (item != null) ? item.clone() : null; // Клонировать предмет или присвоить null
+                                    for (int i = 0; i < 45; i++) {
+                                        ItemStack item = e.getInventory().getItem(i);
+                                        kitroom[i] = (item != null) ? item.clone() : null;
                                     }
 
                                     // Сохранение данных комнаты китов
-                                    KitRoomDataManager.get().setKitRoom(page, kitroom); // Установить содержимое страницы
-                                    KitRoomDataManager.get().saveToDBAsync(); // Асинхронное сохранение в БД
-                                    p.sendMessage(ChatColor.GREEN + "Сохранена страница комнаты китов: " + (page + 1)); // Отправить сообщение об успехе
+                                    KitRoomDataManager.get().setKitRoom(page, kitroom);
+                                    KitRoomDataManager.get().saveToDBAsync();
+                                    p.sendMessage(ChatColor.GREEN + "Страница комнаты китов сохранена: " + (page + 1));
                                 }
                             }
                         }

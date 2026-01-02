@@ -1,19 +1,20 @@
 /*
  * Copyright 2022-2025 Noah Ross
  *
- * Этот файл является частью PerPlayerKit.
+ * This file is part of PerPlayerKit.
  *
- * PerPlayerKit - свободное программное обеспечение: вы можете распространять и/или изменять его
- * в соответствии с условиями лицензии GNU Affero General Public License, опубликованной
- * Free Software Foundation, либо версии 3 Лицензии, либо (по вашему
- * выбору) любой более поздней версии.
+ * PerPlayerKit is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * PerPlayerKit распространяется в надежде, что он будет полезен, но БЕЗ КАКОЙ-ЛИБО
- * ГАРАНТИИ; даже без подразумеваемой гарантии ТОВАРНОГО ВИДА или ПРИГОДНОСТИ
- * ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ. Подробнее см. в лицензии GNU Affero General Public License.
+ * PerPlayerKit is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for
+ * more details.
  *
- * Вы должны были получить копию лицензии GNU Affero General Public License
- * вместе с PerPlayerKit. Если нет, см. <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with PerPlayerKit. If not, see <https://www.gnu.org/licenses/>.
  */
 package dev.noah.perplayerkit;
 
@@ -28,84 +29,85 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class KitRoomDataManager { // Менеджер данных комнаты китов
+public class KitRoomDataManager {
 
 
-    private final ArrayList<ItemStack[]> kitroomData; // Данные комнаты китов (список страниц)
+    private final ArrayList<ItemStack[]> kitroomData;
     private final Plugin plugin;
     private static KitRoomDataManager instance;
 
     public KitRoomDataManager(Plugin plugin) {
         this.plugin = plugin;
-        kitroomData = new ArrayList<>(); // Инициализация списка
+        kitroomData = new ArrayList<>();
 
 
-        ItemStack[] defaultPage = new ItemStack[45]; // Стандартная страница (45 слотов)
-        defaultPage[0] = ItemUtil.createItem(Material.BLUE_STAINED_GLASS_PANE, "<aqua>Стандартный предмет комнаты китов</aqua>"); // Создание стандартного предмета
-        kitroomData.add(defaultPage); // Добавление стандартной страницы 5 раз
+        ItemStack[] defaultPage = new ItemStack[45];
+        // Переведено название предмета по умолчанию
+        defaultPage[0] = ItemUtil.createItem(Material.BLUE_STAINED_GLASS_PANE, "<aqua>Предмет комнаты китов по умолчанию</aqua>");
+        kitroomData.add(defaultPage);
         kitroomData.add(defaultPage);
         kitroomData.add(defaultPage);
         kitroomData.add(defaultPage);
         kitroomData.add(defaultPage);
 
-        ItemFilter.get().addToWhitelist(kitroomData); // Добавление предметов в белый список фильтра
+        ItemFilter.get().addToWhitelist(kitroomData);
 
         instance = this;
     }
 
-    public static KitRoomDataManager get(){ // Получить экземпляр менеджера
-        if(instance == null){ // Проверка инициализации
-            throw new IllegalStateException("KitRoomDataManager еще не инициализирован!");
+    public static KitRoomDataManager get(){
+        if(instance == null){
+            throw new IllegalStateException("KitRoomDataManager еще не был инициализирован!");
         }
         return instance;
     }
 
-    public void setKitRoom(int page, ItemStack[] data) { // Установить страницу комнаты китов
-        kitroomData.set(page, data); // Установка данных страницы
+    public void setKitRoom(int page, ItemStack[] data) {
+        kitroomData.set(page, data);
 
-        ItemFilter.get().clearWhitelist(); // Очистка белого списка фильтра
+        ItemFilter.get().clearWhitelist();
 
-        ItemFilter.get().addToWhitelist(kitroomData); // Добавление обновленных предметов в белый список
+        ItemFilter.get().addToWhitelist(kitroomData);
 
     }
 
-    public ItemStack[] getKitRoomPage(int page) { // Получить страницу комнаты китов
-        return kitroomData.get(page); // Возврат данных страницы
+    public ItemStack[] getKitRoomPage(int page) {
+        return kitroomData.get(page);
     }
 
-    public void saveToDBAsync() { // Асинхронное сохранение в БД
-        new BukkitRunnable() { // Запуск асинхронной задачи
+    public void saveToDBAsync() {
+        new BukkitRunnable() {
 
             @Override
-            public void run() { // Выполнение задачи
+            public void run() {
 
-                for (int i = 0; i < 5; i++) { // Цикл по 5 страницам
-                    ItemStack[] pagedata = kitroomData.get(i); // Получение данных страницы
-                    String output = Serializer.itemStackArrayToBase64(pagedata); // Сериализация в строку
-                    PerPlayerKit.storageManager.saveKitDataByID(IDUtil.getKitRoomId(i), output); // Сохранение в БД
+                for (int i = 0; i < 5; i++) {
+                    ItemStack[] pagedata = kitroomData.get(i);
+                    String output = Serializer.itemStackArrayToBase64(pagedata);
+                    PerPlayerKit.storageManager.saveKitDataByID(IDUtil.getKitRoomId(i), output);
                 }
             }
 
-        }.runTaskAsynchronously(plugin); // Запуск задачи асинхронно
+        }.runTaskAsynchronously(plugin);
 
 
     }
 
-    public void loadFromDB() { // Загрузка из БД
-        ItemFilter.get().clearWhitelist(); // Очистка белого списка фильтра
-        for (int i = 0; i < 5; i++) { // Цикл по 5 страницам
-            String input = PerPlayerKit.storageManager.getKitDataByID(IDUtil.getKitRoomId(i)); // Получение данных из БД
-            if (!input.equalsIgnoreCase("error")) { // Проверка на ошибку
+    public void loadFromDB() {
+        ItemFilter.get().clearWhitelist();
+        for (int i = 0; i < 5; i++) {
+            String input = PerPlayerKit.storageManager.getKitDataByID(IDUtil.getKitRoomId(i));
+            if (!input.equalsIgnoreCase("error")) {
                 try {
-                    ItemStack[] pagedata = Serializer.itemStackArrayFromBase64(input); // Десериализация
-                    kitroomData.set(i, pagedata); // Установка данных страницы
+                    ItemStack[] pagedata = Serializer.itemStackArrayFromBase64(input);
+                    kitroomData.set(i, pagedata);
 
-                } catch (IOException e) { // Обработка ошибки десериализации
-                    e.printStackTrace(); // Вывод стека ошибки
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }
-        ItemFilter.get().addToWhitelist(kitroomData); // Добавление загруженных предметов в белый список
+        ItemFilter.get().addToWhitelist(kitroomData);
     }
 
 }

@@ -1,19 +1,20 @@
 /*
  * Copyright 2022-2025 Noah Ross
  *
- * Этот файл является частью PerPlayerKit.
+ * This file is part of PerPlayerKit.
  *
- * PerPlayerKit - свободное программное обеспечение: вы можете распространять и/или изменять его
- * в соответствии с условиями лицензии GNU Affero General Public License, опубликованной
- * Free Software Foundation, либо версии 3 Лицензии, либо (по вашему
- * выбору) любой более поздней версии.
+ * PerPlayerKit is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * PerPlayerKit распространяется в надежде, что он будет полезен, но БЕЗ КАКОЙ-ЛИБО
- * ГАРАНТИИ; даже без подразумеваемой гарантии ТОВАРНОГО ВИДА или ПРИГОДНОСТИ
- * ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ. Подробнее см. в лицензии GNU Affero General Public License.
+ * PerPlayerKit is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for
+ * more details.
  *
- * Вы должны были получить копию лицензии GNU Affero General Public License
- * вместе с PerPlayerKit. Если нет, см. <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with PerPlayerKit. If not, see <https://www.gnu.org/licenses/>.
  */
 package dev.noah.perplayerkit;
 
@@ -25,69 +26,67 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class ConfigManager { // Менеджер конфигурации
-    private final File configFile; // Файл конфигурации
-    private final FileConfiguration config; // Объект конфигурации
+public class ConfigManager {
+    private final File configFile;
+    private final FileConfiguration config;
     private final Plugin plugin;
 
     public ConfigManager(Plugin plugin) {
         this.plugin = plugin;
-        this.configFile = new File(plugin.getDataFolder(), "config.yml"); // Путь к config.yml
-        this.config = YamlConfiguration.loadConfiguration(configFile); // Загрузка конфигурации из файла
+        this.configFile = new File(plugin.getDataFolder(), "config.yml");
+        this.config = YamlConfiguration.loadConfiguration(configFile);
     }
 
-    public void loadConfig() { // Загрузить конфигурацию
-        if (configFile.exists()) { // Если файл существует
-            mergeMissingKeys(); // Объединить отсутствующие ключи
-        }else{ // Если файл не существует
-            plugin.saveDefaultConfig(); // Сохранить стандартную конфигурацию из ресурсов плагина
+    public void loadConfig() {
+        if (configFile.exists()) {
+            mergeMissingKeys();
+        } else {
+            plugin.saveDefaultConfig();
         }
-        plugin.saveConfig(); // Сохранить текущую конфигурацию (в том числе внесенные изменения)
+        plugin.saveConfig();
     }
 
-    private void mergeMissingKeys() { // Объединить отсутствующие ключи
-        InputStream defaultConfigStream = plugin.getResource("config.yml"); // Поток данных из ресурса config.yml
-        if (defaultConfigStream == null) { // Если ресурс не найден
-            return; // Выйти из метода
+    private void mergeMissingKeys() {
+        InputStream defaultConfigStream = plugin.getResource("config.yml");
+        if (defaultConfigStream == null) {
+            return;
         }
 
-        FileConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultConfigStream)); // Загрузка стандартной конфигурации
+        FileConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultConfigStream));
 
-        boolean updated = false; // Флаг, указывающий, были ли внесены изменения
+        boolean updated = false;
 
-        //цикл по ключам и добавление отсутствующих
-        for (String key : defaultConfig.getKeys(true)) { // Цикл по всем ключам в стандартной конфигурации
-            //специальная обработка для публичных китов
-            if (key.equals("publickits")) { // Если ключ - "publickits"
-                // добавить publickits, если его нет
-                if (!config.contains(key)) { // Проверить, есть ли этот ключ в текущей конфигурации
-                    config.set(key, defaultConfig.getConfigurationSection(key).getValues(true)); // Установить значение секции
-                    plugin.getLogger().info("Добавлена отсутствующая секция: publickits"); // Логировать добавление
-                    updated = true; // Установить флаг обновления
+        // Цикл по ключам для добавления недостающих
+        for (String key : defaultConfig.getKeys(true)) {
+            // Специальная обработка для публичных китов
+            if (key.equals("publickits")) {
+                // Добавить секцию publickits, если она отсутствует
+                if (!config.contains(key)) {
+                    config.set(key, defaultConfig.getConfigurationSection(key).getValues(true));
+                    plugin.getLogger().info("Добавлена отсутствующая секция: publickits");
+                    updated = true;
                 }
-                continue; // Продолжить цикл
-            }else if(key.startsWith("publickits")){ // Если ключ начинается с "publickits"
-                continue; // Пропустить (не добавлять отдельные ключи внутри секции, только саму секцию)
+                continue;
+            } else if (key.startsWith("publickits")) {
+                continue;
             }
 
-            // Добавить отсутствующие ключи для всего остального
-            if (!config.contains(key)) { // Если ключ отсутствует в текущей конфигурации
-                config.set(key, defaultConfig.get(key)); // Установить значение по умолчанию
-                plugin.getLogger().info("Добавлен отсутствующий ключ конфигурации: " + key); // Логировать добавление
-                updated = true; // Установить флаг обновления
+            // Добавление недостающих ключей для всего остального
+            if (!config.contains(key)) {
+                config.set(key, defaultConfig.get(key));
+                plugin.getLogger().info("Добавлен отсутствующий ключ конфигурации: " + key);
+                updated = true;
             }
         }
 
-        //сохранить обновленную конфигурацию
-        if (updated) { // Если были внесены изменения
+        // Сохранение обновленной конфигурации
+        if (updated) {
             try {
-                config.save(configFile); // Сохранить конфигурацию в файл
-                plugin.getLogger().info("Конфигурация обновлена отсутствующими ключами."); // Логировать успех
-            } catch (Exception e) { // Обработка ошибок при сохранении
-                plugin.getLogger().severe("Не удалось сохранить обновленную конфигурацию: " + e.getMessage()); // Логировать ошибку
+                config.save(configFile);
+                plugin.getLogger().info("Конфигурация обновлена недостающими ключами.");
+            } catch (Exception e) {
+                plugin.getLogger().severe("Не удалось сохранить обновленную конфигурацию: " + e.getMessage());
             }
         }
     }
-
-
 }

@@ -48,12 +48,12 @@ public class ItemFilter {
         whitelist = new HashSet<>();
         this.plugin = plugin;
         instance = this;
-        isEnabled = plugin.getConfig().getBoolean("anti-exploit.only-allow-kitroom-items",false);
+        isEnabled = plugin.getConfig().getBoolean("anti-exploit.only-allow-kitroom-items", false);
     }
 
-    public static ItemFilter get(){
-        if(instance == null){
-            throw new IllegalStateException("ItemFilter has not been initialized yet!");
+    public static ItemFilter get() {
+        if (instance == null) {
+            throw new IllegalStateException("ItemFilter еще не был инициализирован!");
         }
         return instance;
     }
@@ -61,7 +61,7 @@ public class ItemFilter {
 
     public ItemStack[] filterItemStack(ItemStack[] input) {
 
-        if(!isEnabled){
+        if (!isEnabled) {
             return input;
         }
 
@@ -83,7 +83,7 @@ public class ItemFilter {
                     }
                 }
 
-                // Handle bundles
+                // Обработка мешков (bundles)
                 if (item.getItemMeta() instanceof BundleMeta bundleMeta) {
                     List<ItemStack> bundleItems = bundleMeta.getItems();
                     if (!bundleItems.isEmpty()) {
@@ -109,14 +109,17 @@ public class ItemFilter {
     public static boolean isSafe(ItemStack i) {
 
         if (i != null) {
+            // Проверка по белому списку типов
             if (!(whitelist.contains(i.getType().toString()))) {
                 return false;
             }
+            // Проверка на превышение стака
             if (i.getAmount() != -1) {
                 if (i.getAmount() > i.getMaxStackSize()) {
                     return false;
                 }
             }
+            // Проверка уровней зачарований
             for (Enchantment e : i.getEnchantments().keySet()) {
                 if (i.getEnchantmentLevel(e) > e.getMaxLevel()) {
                     return false;
@@ -126,9 +129,11 @@ public class ItemFilter {
 
             if (i.hasItemMeta()) {
                 ItemMeta meta = i.getItemMeta();
+                // Запрет модификаторов атрибутов
                 if (meta != null && meta.hasAttributeModifiers()) {
                     return false;
                 }
+                // Проверка флагов предметов
                 return meta != null && meta.getItemFlags().isEmpty();
 
             }

@@ -1,19 +1,20 @@
 /*
  * Copyright 2022-2025 Noah Ross
  *
- * Этот файл является частью PerPlayerKit.
+ * This file is part of PerPlayerKit.
  *
- * PerPlayerKit - свободное программное обеспечение: вы можете распространять и/или изменять его
- * в соответствии с условиями лицензии GNU Affero General Public License, опубликованной
- * Free Software Foundation, либо версии 3 Лицензии, либо (по вашему
- * выбору) любой более поздней версии.
+ * PerPlayerKit is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * PerPlayerKit распространяется в надежде, что он будет полезен, но БЕЗ КАКОЙ-ЛИБО
- * ГАРАНТИИ; даже без подразумеваемой гарантии ТОВАРНОГО ВИДА или ПРИГОДНОСТИ
- * ДЛЯ ОПРЕДЕЛЕННОЙ ЦЕЛИ. Подробнее см. в лицензии GNU Affero General Public License.
+ * PerPlayerKit is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for
+ * more details.
  *
- * Вы должны были получить копию лицензии GNU Affero General Public License
- * вместе с PerPlayerKit. Если нет, см. <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with PerPlayerKit. If not, see <https://www.gnu.org/licenses/>.
  */
 package dev.noah.perplayerkit.util;
 
@@ -26,43 +27,43 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class PlayerUtil {
 
-    public static void repairItem(ItemStack i) { // Починить предмет
-        if (i != null) { // Если предмет существует
-            ItemMeta meta = i.getItemMeta(); // Получить метаданные предмета
-            Damageable damageable = (Damageable) meta; // Привести к Damageable
-            if (damageable != null && damageable.hasDamage()) { // Если есть данные о прочности и есть повреждения
-                damageable.setDamage(0); // Установить повреждения на 0
+    public static void repairItem(ItemStack i) {
+        if (i != null) {
+            ItemMeta meta = i.getItemMeta();
+            Damageable damageable = (Damageable) meta;
+            if (damageable != null && damageable.hasDamage()) {
+                damageable.setDamage(0);
             }
-            i.setItemMeta(damageable); // Установить изменённые метаданные обратно
+            i.setItemMeta(damageable);
         }
 
     }
 
-    public static void repairAll(Player p) { // Починить всё
+    public static void repairAll(Player p) {
 
-        for (ItemStack i : p.getInventory().getContents()) { // Цикл по всем предметам в инвентаре
-            repairItem(i); // Починить предмет
+        for (ItemStack i : p.getInventory().getContents()) {
+            repairItem(i);
         }
-        p.sendMessage(ChatColor.GREEN + "Все предметы починены!"); // Отправить сообщение игроку
+        p.sendMessage(ChatColor.GREEN + "All items repaired!");
     }
 
-    public static void healPlayer(Player p) { // Вылечить игрока
-        p.setHealth(20); // Установить здоровье
-        p.setFoodLevel(20); // Установить уровень еды
-        p.setSaturation(20); // Установить насыщение
+    public static void healPlayer(Player p) {
+        p.setHealth(20);
+        p.setFoodLevel(20);
+        p.setSaturation(20);
 
-        // Удалить эффекты зелий, если настроено
-        if (PerPlayerKit.getPlugin().getConfig().getBoolean("feature.heal-remove-effects", false)) { // Получить настройку из config
-            p.getActivePotionEffects().forEach(potionEffect -> p.removePotionEffect(potionEffect.getType())); // Удалить каждый активный эффект
+        // Remove potion effects if configured to do so
+        if (PerPlayerKit.getPlugin().getConfig().getBoolean("feature.heal-remove-effects", false)) {
+            p.getActivePotionEffects().forEach(potionEffect -> p.removePotionEffect(potionEffect.getType()));
         }
 
-        p.sendMessage(ChatColor.GREEN + "Вы были вылечены!"); // Отправить сообщение
+        p.sendMessage(ChatColor.GREEN + "You have been healed!");
     }
 
-    public static void healPlayerSilent(Player p) { // Тихо вылечить игрока
-        p.setHealth(20); // Установить здоровье
-        p.setFoodLevel(20); // Установить еду
-        p.setSaturation(20); // Установить насыщение
+    public static void healPlayerSilent(Player p) {
+        p.setHealth(20);
+        p.setFoodLevel(20);
+        p.setSaturation(20);
     }
 
 }
